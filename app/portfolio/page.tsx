@@ -9,7 +9,7 @@ const projects = [
     title: "Campanha Nike 2025", // Nome do projeto
     category: "Publicidade", // Categoria
     image: "https://images.unsplash.com/photo-1535016120720-40c6874c3b1c?q=80&w=2664&auto=format&fit=crop", // Link da imagem de capa (pode ser link do Google ou arquivo local)
-    link: "https://youtube.com" // Link para onde vai ao clicar (Youtube/Vimeo)
+    link: "https://https://youtu.be/nowQ1VjkI3Q.com" // Link para onde vai ao clicar (Youtube/Vimeo)
   },
   {
     id: 2,

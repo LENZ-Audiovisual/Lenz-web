@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google"; // Fonte moderna do Google
 import "./globals.css"; // A importação crítica do estilo
+import CookieBanner from "./components/CookieBanner";
 
 // Configurando a fonte Inter
 const inter = Inter({ subsets: ["latin"] });
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={inter.className}>
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

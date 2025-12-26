@@ -1,11 +1,11 @@
-import Header from './components/Header';
+import Navbar from './components/Navbar';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
-      <Header/>
-
+      <Navbar /> 
+      
       <section className="flex-1 flex flex-col justify-center items-center px-6 pt-20 text-center">
         <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-none">
           AUDIOVISUAL NA <br />
@@ -13,7 +13,7 @@ export default function Home() {
             VELOCIDADE DO AGORA.
           </span>
         </h1>
-
+        
         <p className="max-w-2xl text-gray-400 text-lg md:text-xl mb-10 font-light">
           Nascemos para encurtar a distância entre a ideia e o play. 
           Sem burocracia. Apenas fluxo e qualidade cinematográfica.

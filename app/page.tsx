@@ -1,61 +1,126 @@
-import Image from 'next/image';
-import Navbar from './components/Navbar';
-import Link from 'next/link';
+import Link from "next/link";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
-    // Adicionei 'relative' para poder posicionar o fundo 'absolute' dentro dele
-    <main className="min-h-screen flex flex-col relative overflow-hidden">
-      
-      {/* --- CAMADA 1: A IMAGEM DE FUNDO --- */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/bg-home.jpg" // O nome do arquivo que você colocou na pasta public
-          alt="Background Lente Cinema"
-          fill // Faz a imagem preencher todo o espaço
-          className="object-cover" // Garante que não distorça, cortando as bordas se precisar
-          priority // Carrega com prioridade máxima
-          quality={90} // Alta qualidade
-        />
-        {/* --- CAMADA 2: A PELÍCULA ESCURA (Overlay) --- */}
-        {/* Mude o 'bg-black/60' para /40 se quiser mais claro, ou /80 se quiser mais escuro */}
-        <div className="absolute inset-0 bg-black/70" />
-      </div>
+    <div className="bg-black text-white selection:bg-purple-500/30">
+      <Navbar />
 
-      {/* --- CAMADA 3: O CONTEÚDO REAL (Precisa de z-index alto) --- */}
-      {/* Navbar já tem z-index alto no componente dela */}
-      <Navbar /> 
-      
-      {/* Adicionei 'relative z-10' para garantir que o texto fique SOBRE a imagem */}
-      <section className="flex-1 flex flex-col justify-center items-center px-6 pt-20 text-center relative z-10">
-        <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-none text-white">
-          AUDIOVISUAL NA <br />
-          {/* Mudei ligeiramente o gradiente para se destacar mais sobre o fundo novo */}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500">
-            VELOCIDADE DO AGORA.
-          </span>
-        </h1>
-        
-        <p className="max-w-2xl text-gray-300 text-lg md:text-xl mb-10 font-light">
-          Nascemos para encurtar a distância entre a ideia e o play. 
-          Sem burocracia. Apenas fluxo e qualidade cinematográfica.
-        </p>
+      <main>
+        {/* SESSÃO 1: HERO (Abertura) */}
+        <section className="h-screen flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
+          
+          {/* Efeito de fundo (Luz vazando) */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/20 blur-[120px] rounded-full opacity-50 pointer-events-none" />
 
-        <div className="flex flex-col md:flex-row gap-4">
-          <Link href="/portfolio" className="px-8 py-4 bg-white text-black font-bold uppercase tracking-widest hover:bg-gray-200 transition-all rounded-sm">
-            Ver Trabalhos
-          </Link>
-          {/* Link corrigido para /contato (iremos criar a página em breve) */}
-          <Link href="/contato" className="px-8 py-4 border border-white/20 text-white font-bold uppercase tracking-widest hover:bg-white/10 transition-all rounded-sm backdrop-blur-sm">
-            Iniciar Projeto
-          </Link>
-        </div>
-      </section>
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-8 z-10">
+            AUDIOVISUAL NA <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+              VELOCIDADE DO AGORA.
+            </span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-neutral-400 max-w-3xl mb-12 z-10 leading-relaxed">
+            Nascemos para encurtar a distância entre a ideia e o play. 
+            Sem burocracia. Apenas fluxo e qualidade cinematográfica.
+          </p>
 
-      <footer className="py-10 text-center text-gray-500 text-sm border-t border-white/10 relative z-10">
-        <p>© 2025 LAMPEJO. Todos os direitos reservados.</p>
-        <p>Brasília, DF.</p>
-      </footer>
-    </main>
+          <div className="flex flex-col md:flex-row gap-6 z-10">
+            <Link 
+              href="/portfolio" 
+              className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-neutral-200 transition-all hover:scale-105"
+            >
+              VER TRABALHOS
+            </Link>
+            <Link 
+              href="/contato" 
+              className="border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all"
+            >
+              INICIAR PROJETO
+            </Link>
+          </div>
+        </section>
+
+        {/* SESSÃO 2: CLIENTES */}
+        <section className="py-12 border-y border-white/5 bg-neutral-900/20">
+          <div className="max-w-7xl mx-auto px-6 text-center">
+            <p className="text-sm text-neutral-500 uppercase tracking-widest mb-8">
+              Quem confia no nosso olhar
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 hover:opacity-100 transition-all duration-500">
+              <span className="text-2xl md:text-3xl font-bold text-white tracking-tight">NIC.br</span>
+              <span className="text-2xl md:text-3xl font-bold text-white tracking-tight">SAFERNET BRASIL</span>
+              <span className="text-2xl md:text-3xl font-bold text-white tracking-tight">OAB/DF</span>
+              <span className="text-2xl md:text-3xl font-bold text-white tracking-tight">ESTADÃO</span>
+            </div>
+          </div>
+        </section>
+
+        {/* SESSÃO 3: O QUE FAZEMOS (Serviços) */}
+        <section className="py-32 px-6 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            
+            <div className="space-y-8">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter leading-none">
+                CRIAMOS NARRATIVAS <br />
+                QUE PRENDEM.
+              </h2>
+              <p className="text-lg text-neutral-400 leading-relaxed">
+                Da captação dinâmica com gimbals de alta precisão até a colorimetria que define o mood. Nossa pós-produção não conserta erros, ela eleva a narrativa.
+              </p>
+              
+              <ul className="space-y-4 pt-4">
+                {["Direção de Fotografia", "Edição & Color Grading", "Cobertura de Eventos", "Conteúdo para Redes"].map((item) => (
+                  <li key={item} className="flex items-center gap-4 text-xl font-medium border-b border-white/10 pb-4">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Card Visual "Showreel" */}
+            <div className="relative h-[600px] bg-neutral-900 rounded-3xl overflow-hidden border border-white/10 group">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10" />
+              <div className="absolute bottom-8 left-8 z-20">
+                <p className="text-blue-400 font-mono text-xs uppercase tracking-widest mb-2">Showreel 2025</p>
+                <h3 className="text-3xl font-bold text-white">ASSISTA AO MANIFESTO</h3>
+              </div>
+              
+              {/* Botão de Play Decorativo */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform cursor-pointer">
+                <svg className="w-8 h-8 text-white fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* SESSÃO 4: ACADEMY TEASER (Atualizada) */}
+        <section className="py-32 bg-neutral-900/30 border-t border-white/5">
+          <div className="max-w-7xl mx-auto px-6 text-center">
+            {/* Tag Atualizada para LAMPEJO ACADEMY */}
+            <span className="inline-block px-4 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-xs font-bold tracking-widest uppercase mb-6">
+              LAMPEJO ACADEMY
+            </span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-8">
+              COMPARTILHAMOS <br /> O CÓDIGO FONTE.
+            </h2>
+            <p className="text-xl text-neutral-400 max-w-2xl mx-auto mb-12">
+              Não guardamos segredos. Acesse nossos cursos, LUTs e processos de trabalho na Lampejo Academy.
+            </p>
+            
+            <Link 
+              href="/academy" 
+              className="inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:text-purple-400 hover:border-purple-400 transition-all text-lg"
+            >
+              EXPLORAR A ACADEMY 
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </Link>
+          </div>
+        </section>
+
+      </main>
+    </div>
   );
 }

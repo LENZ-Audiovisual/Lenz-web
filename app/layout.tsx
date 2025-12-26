@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Fonte moderna do Google
-import "./globals.css"; // A importação crítica do estilo
-import CookieBanner from "./components/CookieBanner";
+import { Inter } from "next/font/google"; // Ou a fonte que você estiver usando
+import "./globals.css";
+import Footer from "./components/Footer"; // <--- 1. Importe o Footer
 
-// Configurando a fonte Inter
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "LAMPEJO | Audiovisual",
-  description: "Produtora Audiovisual em Brasília.",
+  title: "Lampejo | Produtora Audiovisual",
+  description: "Audiovisual na velocidade do agora.",
 };
 
 export default function RootLayout({
@@ -19,8 +18,13 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className}>
+        
+        {/* O conteúdo das páginas (Home, Contato, etc) entra aqui */}
         {children}
-        <CookieBanner />
+
+        {/* O Footer ficará fixo no final de tudo */}
+        <Footer /> 
+
       </body>
     </html>
   );

@@ -11,37 +11,59 @@ export default function Navbar() {
   // Controle de visibilidade e estilo
   const [isVisible, setIsVisible] = useState(true); // Barra visível ou não
   const [lastScrollY, setLastScrollY] = useState(0); // Última posição do scroll
-  const [isScrolled, setIsScrolled] = useState(false); // Se já saiu do topo (para ficar preta)
+  const [isScrolled, setIsScrolled] = useState(false); // Se já saiu do topo
   
   const pathname = usePathname();
 
+  // 1. EFEITO PARA TRAVAR O SCROLL QUANDO O MENU ABRE (CORREÇÃO MOBILE)
+  useEffect(() => {
+    if (isOpen) {
+      // Trava a rolagem da página
+      document.body.style.overflow = "hidden";
+      // Garante que a barra esteja visível e com fundo preto
+      setIsVisible(true);
+      setIsScrolled(true); 
+    } else {
+      // Destrava a rolagem
+      document.body.style.overflow = "unset";
+      // Restaura a cor correta baseada na posição atual
+      if (window.scrollY < 50) setIsScrolled(false);
+    }
+
+    // Limpeza ao desmontar
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  // 2. LÓGICA DE SCROLL (Esconde/Mostra Navbar)
   useEffect(() => {
     const controlNavbar = () => {
+      // Se o menu estiver aberto, NÃO executa a lógica de esconder
+      if (isOpen) return;
+
       const currentScrollY = window.scrollY;
 
-      // 1. Lógica para esconder/mostrar (Hide on scroll down, Show on scroll up)
+      // Lógica para esconder/mostrar (Hide on scroll down, Show on scroll up)
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Se está descendo E já passou de 100px -> Esconde
-        setIsVisible(false);
+        setIsVisible(false); // Esconde
       } else {
-        // Se está subindo -> Mostra
-        setIsVisible(true);
+        setIsVisible(true); // Mostra
       }
 
-      // 2. Lógica para mudar a cor (Transparente -> Preto)
+      // Lógica para mudar a cor
       if (currentScrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
-      // Atualiza a última posição
       setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", controlNavbar);
     return () => window.removeEventListener("scroll", controlNavbar);
-  }, [lastScrollY]);
+  }, [lastScrollY, isOpen]);
 
   const navLinks = [
     { title: "HOME", href: "/" },
@@ -59,10 +81,10 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ease-in-out ${
-        // CLASSE MÁGICA: Se visible=false, joga a barra para cima (-100%)
+        // Se isVisible for falso, joga a barra para cima (-100%)
         isVisible ? "translate-y-0" : "-translate-y-full"
       } ${
-        // ESTILO DO FUNDO: Preto se rolou, transparente se tá no topo
+        // Estilo do fundo
         isScrolled 
           ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/10 shadow-lg" 
           : "bg-transparent py-6"

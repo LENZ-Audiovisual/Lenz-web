@@ -2,16 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 
-// AGORA OS CAMINHOS SÃO DIRETOS (SEM PASTA EXTRA)
-// Certifique-se que renomeou a imagem do CGI para cgibr.png
+// VOLTANDO PARA A PASTA /clientes/ (Onde provavelmente estão)
 const clients = [
-  { name: "NIC.br", logo: "/nicbr.png" },
-  { name: "CGI.br", logo: "/cgibr.png" },
-  { name: "Safernet", logo: "/safernet.png" },
-  { name: "CAADF", logo: "/caadf.png" },
-  { name: "OAB/DF", logo: "/oabdf.png" },
-  { name: "Estadão", logo: "/estadao.png" },
-  { name: "HY Produções", logo: "/hy.png" },
+  { name: "NIC.br", logo: "/clientes/nicbr.png" },
+  { name: "CGI.br", logo: "/clientes/cgibr.png" }, // Nome original do seu print
+  { name: "Safernet", logo: "/clientes/safernet.png" },
+  { name: "CAADF", logo: "/clientes/caadf.png" },
+  { name: "OAB/DF", logo: "/clientes/oabdf.png" },
+  { name: "Estadão", logo: "/clientes/estadao.png" },
+  { name: "HY Produções", logo: "/clientes/hy.png" },
 ];
 
 export default function Home() {
@@ -44,13 +43,13 @@ export default function Home() {
         </section>
 
         {/* SESSÃO 2: CLIENTES (Fundo Branco) */}
-        {/* IMPORTANTE: Se suas logos forem brancas, elas vão sumir aqui. Se sumirem, me avise que trocamos para fundo preto. */}
         <section className="py-20 bg-white overflow-hidden">
           <div className="max-w-full mx-auto text-center">
             <p className="text-sm text-neutral-800 font-bold uppercase tracking-widest mb-12">
               Quem confia no nosso olhar
             </p>
             
+            {/* Se as logos forem BRANCAS, elas não vão aparecer aqui. Avise se precisar mudar o fundo. */}
             <div className="relative flex overflow-x-hidden group py-4">
               
               <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>

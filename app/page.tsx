@@ -2,16 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 
-// ATENÇÃO: Os caminhos agora apontam para a pasta 'clientes' (em português)
-// Verifique se os nomes dos arquivos estão EXATAMENTE assim na sua pasta.
+// AGORA OS CAMINHOS SÃO DIRETOS (SEM PASTA EXTRA)
+// Certifique-se que renomeou a imagem do CGI para cgibr.png
 const clients = [
-  { name: "NIC.br", logo: "/clientes/nicbr.png" },
-  { name: "CGI.br", logo: "/clientes/Cgi.br.svg.png" }, // Nome exato conforme seu print
-  { name: "Safernet", logo: "/clientes/safernet.png" },
-  { name: "CAADF", logo: "/clientes/caadf.png" },
-  { name: "OAB/DF", logo: "/clientes/oabdf.png" },
-  { name: "Estadão", logo: "/clientes/estadao.png" },
-  { name: "HY Produções", logo: "/clientes/hy.png" },
+  { name: "NIC.br", logo: "/nicbr.png" },
+  { name: "CGI.br", logo: "/cgibr.png" },
+  { name: "Safernet", logo: "/safernet.png" },
+  { name: "CAADF", logo: "/caadf.png" },
+  { name: "OAB/DF", logo: "/oabdf.png" },
+  { name: "Estadão", logo: "/estadao.png" },
+  { name: "HY Produções", logo: "/hy.png" },
 ];
 
 export default function Home() {
@@ -43,7 +43,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SESSÃO 2: CLIENTES (Fundo Branco + Caminhos Corrigidos) */}
+        {/* SESSÃO 2: CLIENTES (Fundo Branco) */}
+        {/* IMPORTANTE: Se suas logos forem brancas, elas vão sumir aqui. Se sumirem, me avise que trocamos para fundo preto. */}
         <section className="py-20 bg-white overflow-hidden">
           <div className="max-w-full mx-auto text-center">
             <p className="text-sm text-neutral-800 font-bold uppercase tracking-widest mb-12">
@@ -52,7 +53,6 @@ export default function Home() {
             
             <div className="relative flex overflow-x-hidden group py-4">
               
-              {/* Máscaras laterais para suavizar */}
               <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
               <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
 
@@ -63,8 +63,8 @@ export default function Home() {
                     <Image 
                       src={client.logo}
                       alt={`Logo ${client.name}`}
-                      width={200} // Largura base
-                      height={100} // Altura base
+                      width={200}
+                      height={100}
                       className="h-full w-auto object-contain"
                     />
                   </div>

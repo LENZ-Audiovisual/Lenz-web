@@ -7,25 +7,41 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  
+  // Controle de visibilidade e estilo
+  const [isVisible, setIsVisible] = useState(true); // Barra visível ou não
+  const [lastScrollY, setLastScrollY] = useState(0); // Última posição do scroll
+  const [isScrolled, setIsScrolled] = useState(false); // Se já saiu do topo (para ficar preta)
+  
   const pathname = usePathname();
 
-  // Lógica de Scroll para mudar o visual da Navbar
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+
+      // 1. Lógica para esconder/mostrar (Hide on scroll down, Show on scroll up)
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Se está descendo E já passou de 100px -> Esconde
+        setIsVisible(false);
       } else {
-        setScrolled(false);
+        // Se está subindo -> Mostra
+        setIsVisible(true);
       }
+
+      // 2. Lógica para mudar a cor (Transparente -> Preto)
+      if (currentScrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
+      // Atualiza a última posição
+      setLastScrollY(currentScrollY);
     };
 
-    // Adiciona o evento
-    window.addEventListener("scroll", handleScroll);
-    
-    // Remove o evento ao sair (limpeza)
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", controlNavbar);
+    return () => window.removeEventListener("scroll", controlNavbar);
+  }, [lastScrollY]);
 
   const navLinks = [
     { title: "HOME", href: "/" },
@@ -42,11 +58,14 @@ export default function Navbar() {
 
   return (
     <header
-      // AQUI ESTÁ A MÁGICA DO SCROLL
       className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ease-in-out ${
-        scrolled 
-          ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/10 shadow-lg" // ESTADO ROLADO (Preto)
-          : "bg-transparent py-6" // ESTADO TOPO (Transparente)
+        // CLASSE MÁGICA: Se visible=false, joga a barra para cima (-100%)
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      } ${
+        // ESTILO DO FUNDO: Preto se rolou, transparente se tá no topo
+        isScrolled 
+          ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/10 shadow-lg" 
+          : "bg-transparent py-6"
       }`}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto px-6">

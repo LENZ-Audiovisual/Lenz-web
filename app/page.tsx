@@ -2,15 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 
-// Lista atualizada de clientes
+// AJUSTADO: Caminhos agora apontam para a pasta 'clientes' (com 'e')
 const clients = [
-  { name: "NIC.br", logo: "/clients/nicbr.png" },
-  { name: "CGI.br", logo: "/clients/cgibr.png" },
-  { name: "Safernet", logo: "/clients/safernet.png" },
-  { name: "CAADF", logo: "/clients/caadf.png" },
-  { name: "OAB/DF", logo: "/clients/oabdf.png" },
-  { name: "Estadão", logo: "/clients/estadao.png" },
-  { name: "HY Produções", logo: "/clients/hy.png" },
+  { name: "NIC.br", logo: "/clientes/nicbr.png" },
+  { name: "CGI.br", logo: "/clientes/Cgi.br.svg.png" }, // Nome exato do seu arquivo
+  { name: "Safernet", logo: "/clientes/safernet.png" },
+  { name: "CAADF", logo: "/clientes/caadf.png" },
+  { name: "OAB/DF", logo: "/clientes/oabdf.png" },
+  { name: "Estadão", logo: "/clientes/estadao.png" },
+  { name: "HY Produções", logo: "/clientes/hy.png" },
 ];
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
       <Navbar />
 
       <main>
-        {/* SESSÃO 1: HERO (Abertura) */}
+        {/* SESSÃO 1: HERO */}
         <section className="h-screen flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/20 blur-[120px] rounded-full opacity-50 pointer-events-none" />
           <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-8 z-10">
@@ -42,7 +42,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SESSÃO 2: CLIENTES (Carrossel com FUNDO BRANCO) */}
+        {/* SESSÃO 2: CLIENTES (Fundo Branco + Caminhos Corrigidos) */}
         <section className="py-20 bg-white overflow-hidden">
           <div className="max-w-full mx-auto text-center">
             <p className="text-sm text-neutral-800 font-bold uppercase tracking-widest mb-12">
@@ -51,7 +51,6 @@ export default function Home() {
             
             <div className="relative flex overflow-x-hidden group py-4">
               
-              {/* Máscaras laterais BRANCAS */}
               <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
               <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
 
@@ -70,7 +69,7 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* FAIXA 2 (Loop) */}
+              {/* FAIXA 2 */}
               <div className="animate-scroll flex items-center gap-16 md:gap-24 pr-16 md:pr-24 whitespace-nowrap will-change-transform" aria-hidden="true">
                 {clients.map((client, index) => (
                   <div key={`dup-${index}`} className="relative h-12 md:h-20 w-auto transition-all flex items-center justify-center hover:scale-105 duration-300">

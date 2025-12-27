@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Clock, Share2 } from "lucide-react";
-import Navbar from "../../components/Navbar"; // CORRIGIDO: Apenas 2 níveis (../../)
+import Navbar from "../../components/Navbar";
 import { notFound } from "next/navigation";
 
 // --- DADOS DOS ARTIGOS ---
@@ -138,6 +138,13 @@ const articles = [
   }
 ];
 
+// --- FUNÇÃO PARA GERAR PARÂMETROS ESTÁTICOS (ESSENCIAL PARA BUILD ESTÁTICO) ---
+export async function generateStaticParams() {
+  return articles.map((article) => ({
+    slug: article.slug,
+  }));
+}
+
 export default async function ArticlePage({
   params,
 }: {
@@ -198,7 +205,7 @@ export default async function ArticlePage({
           </p>
 
           <div className="prose prose-invert prose-lg max-w-none">
-            {/* Simulando parágrafos de conteúdo */}
+            {/* Conteúdo */}
             <p className="text-neutral-400 leading-relaxed mb-8">
               {article.content}
             </p>

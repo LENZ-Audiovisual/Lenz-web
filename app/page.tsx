@@ -41,8 +41,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SESSÃO 2: CLIENTES (Corrigida) */}
-        <section className="py-20 bg-white overflow-hidden">
+        {/* --- O DEGRADÊ MÁGICO --- */}
+        {/* Essa div faz a transição suave do Preto para o Branco */}
+        <div className="w-full h-32 bg-gradient-to-b from-black to-white pointer-events-none" />
+
+        {/* SESSÃO 2: CLIENTES (Fundo Branco) */}
+        <section className="pb-20 pt-10 bg-white overflow-hidden">
           <div className="max-w-full mx-auto">
             {/* Título com cor PRETA */}
             <p className="text-sm text-black font-bold uppercase tracking-widest mb-12 text-center">
@@ -58,24 +62,24 @@ export default function Home() {
               {/* FAIXA 1 */}
               <div className="flex animate-scroll min-w-full flex-shrink-0 justify-around items-center gap-10 px-10">
                 {clients.map((client, index) => (
-                  <div key={index} className="flex items-center justify-center w-32 md:w-48">
+                  <div key={index} className="flex items-center justify-center w-32 md:w-48 h-24">
                     <img 
                       src={client.logo}
                       alt={client.name}
-                      className="max-h-12 md:max-h-20 w-auto object-contain hover:scale-110 transition-transform duration-300"
+                      className="max-h-16 w-auto object-contain hover:scale-110 transition-transform duration-300 filter grayscale hover:grayscale-0"
                     />
                   </div>
                 ))}
               </div>
 
-              {/* FAIXA 2 (Clone para loop) */}
+              {/* FAIXA 2 (Clone) */}
               <div className="flex animate-scroll min-w-full flex-shrink-0 justify-around items-center gap-10 px-10" aria-hidden="true">
                 {clients.map((client, index) => (
-                  <div key={`dup-${index}`} className="flex items-center justify-center w-32 md:w-48">
+                  <div key={`dup-${index}`} className="flex items-center justify-center w-32 md:w-48 h-24">
                     <img 
                       src={client.logo}
                       alt={client.name}
-                      className="max-h-12 md:max-h-20 w-auto object-contain hover:scale-110 transition-transform duration-300"
+                      className="max-h-16 w-auto object-contain hover:scale-110 transition-transform duration-300 filter grayscale hover:grayscale-0"
                     />
                   </div>
                 ))}
@@ -84,6 +88,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* OUTRO DEGRADÊ INVERSO (Branco para Preto) para voltar ao tema dark */}
+        <div className="w-full h-32 bg-gradient-to-b from-white to-black pointer-events-none" />
 
         {/* SESSÃO 3: O QUE FAZEMOS */}
         <section className="py-32 px-6 max-w-7xl mx-auto">

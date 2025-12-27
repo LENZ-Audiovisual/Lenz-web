@@ -2,10 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 
-// AJUSTADO: Caminhos agora apontam para a pasta 'clientes' (com 'e')
+// ATENÇÃO: Os caminhos agora apontam para a pasta 'clientes' (em português)
+// Verifique se os nomes dos arquivos estão EXATAMENTE assim na sua pasta.
 const clients = [
   { name: "NIC.br", logo: "/clientes/nicbr.png" },
-  { name: "CGI.br", logo: "/clientes/Cgi.br.svg.png" }, // Nome exato do seu arquivo
+  { name: "CGI.br", logo: "/clientes/Cgi.br.svg.png" }, // Nome exato conforme seu print
   { name: "Safernet", logo: "/clientes/safernet.png" },
   { name: "CAADF", logo: "/clientes/caadf.png" },
   { name: "OAB/DF", logo: "/clientes/oabdf.png" },
@@ -51,6 +52,7 @@ export default function Home() {
             
             <div className="relative flex overflow-x-hidden group py-4">
               
+              {/* Máscaras laterais para suavizar */}
               <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
               <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
 
@@ -61,15 +63,15 @@ export default function Home() {
                     <Image 
                       src={client.logo}
                       alt={`Logo ${client.name}`}
-                      width={200}
-                      height={100}
+                      width={200} // Largura base
+                      height={100} // Altura base
                       className="h-full w-auto object-contain"
                     />
                   </div>
                 ))}
               </div>
 
-              {/* FAIXA 2 */}
+              {/* FAIXA 2 (Loop) */}
               <div className="animate-scroll flex items-center gap-16 md:gap-24 pr-16 md:pr-24 whitespace-nowrap will-change-transform" aria-hidden="true">
                 {clients.map((client, index) => (
                   <div key={`dup-${index}`} className="relative h-12 md:h-20 w-auto transition-all flex items-center justify-center hover:scale-105 duration-300">

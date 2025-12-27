@@ -2,15 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 
-// Caminhos para a pasta 'clientes'
+// AGORA OS CAMINHOS SÃO DIRETOS NA RAIZ (Sem /clientes/)
 const clients = [
-  { name: "NIC.br", logo: "/clientes/nicbr.png" },
-  { name: "CGI.br", logo: "/clientes/cgibr.png" },
-  { name: "Safernet", logo: "/clientes/safernet.png" },
-  { name: "CAADF", logo: "/clientes/caadf.png" },
-  { name: "OAB/DF", logo: "/clientes/oabdf.png" },
-  { name: "Estadão", logo: "/clientes/estadao.png" },
-  { name: "HY Produções", logo: "/clientes/hy.png" },
+  { name: "NIC.br", logo: "/nicbr.png" },
+  { name: "CGI.br", logo: "/cgibr.png" },
+  { name: "Safernet", logo: "/safernet.png" },
+  { name: "CAADF", logo: "/caadf.png" },
+  { name: "OAB/DF", logo: "/oabdf.png" },
+  { name: "Estadão", logo: "/estadao.png" },
+  { name: "HY Produções", logo: "/hy.png" },
 ];
 
 export default function Home() {
@@ -42,18 +42,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SESSÃO 2: CLIENTES (Fundo Cinza Prata - Revela tudo) */}
-        <section className="py-20 bg-neutral-200 overflow-hidden">
+        {/* SESSÃO 2: CLIENTES */}
+        {/* Fundo VERMELHO TEMPORÁRIO para confirmar que o código atualizou */}
+        <section className="py-20 bg-red-900 overflow-hidden">
           <div className="max-w-full mx-auto text-center">
-            <p className="text-sm text-neutral-600 font-bold uppercase tracking-widest mb-12">
-              Quem confia no nosso olhar
+            <p className="text-sm text-white font-bold uppercase tracking-widest mb-12">
+              Teste de Deploy (Ficará Vermelho se funcionar)
             </p>
             
             <div className="relative flex overflow-x-hidden group py-4">
               
-              {/* Máscaras laterais cinza */}
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-neutral-200 to-transparent z-10"></div>
-              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-neutral-200 to-transparent z-10"></div>
+              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-red-900 to-transparent z-10"></div>
+              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-red-900 to-transparent z-10"></div>
 
               {/* FAIXA 1 */}
               <div className="animate-scroll flex items-center gap-16 md:gap-24 pr-16 md:pr-24 whitespace-nowrap will-change-transform">
@@ -64,14 +64,14 @@ export default function Home() {
                       alt={`Logo ${client.name}`}
                       width={200}
                       height={100}
-                      className="h-full w-auto object-contain mix-blend-multiply" 
-                      unoptimized={true} // FORÇA O CARREGAMENTO SEM CACHE/OTIMIZAÇÃO
+                      className="h-full w-auto object-contain"
+                      unoptimized={true} // Força o carregamento bruto da imagem
                     />
                   </div>
                 ))}
               </div>
 
-              {/* FAIXA 2 (Loop) */}
+              {/* FAIXA 2 */}
               <div className="animate-scroll flex items-center gap-16 md:gap-24 pr-16 md:pr-24 whitespace-nowrap will-change-transform" aria-hidden="true">
                 {clients.map((client, index) => (
                   <div key={`dup-${index}`} className="relative h-12 md:h-20 w-auto transition-all flex items-center justify-center hover:scale-105 duration-300">
@@ -80,7 +80,7 @@ export default function Home() {
                       alt={`Logo ${client.name}`}
                       width={200}
                       height={100}
-                      className="h-full w-auto object-contain mix-blend-multiply"
+                      className="h-full w-auto object-contain"
                       unoptimized={true}
                     />
                   </div>

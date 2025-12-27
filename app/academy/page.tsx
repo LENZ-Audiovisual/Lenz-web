@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Navbar from "../components/Navbar"; // Note os dois pontos (..) para voltar uma pasta
+import Navbar from "../components/Navbar"; // Note os dois pontos (..)
 import { COURSES } from "../lib/courses";
 
 export default function AcademyPage() {
@@ -28,7 +28,7 @@ export default function AcademyPage() {
           {COURSES.map((course) => (
             <div key={course.id} className="group flex flex-col bg-neutral-900/40 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all hover:-translate-y-1">
               
-              {/* Thumbnail (Simulada com Gradiente) */}
+              {/* Thumbnail */}
               <div className={`h-48 w-full bg-gradient-to-br ${course.thumbnailColor} relative`}>
                 <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white border border-white/10">
                   {course.type}

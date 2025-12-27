@@ -10,6 +10,8 @@ const clients = [
   { name: "OAB/DF", logo: "/oabdf.png" },
   { name: "Estadão", logo: "/estadao.png" },
   { name: "HY Produções", logo: "/hy.png" },
+  { name: "Sem Rótulo", logo: "/semrotulo.png" },
+  { name: "Sinicon", logo: "/sinicon.png" }, // NOVO CLIENTE
 ];
 
 export default function Home() {
@@ -42,14 +44,11 @@ export default function Home() {
         </section>
 
         {/* --- TRANSITION 1: PRETO PARA BRANCO --- */}
-        {/* Reduzi para h-32 (ficou mais curto) */}
         <div className="w-full h-32 bg-gradient-to-b from-black to-white pointer-events-none" />
 
         {/* SESSÃO 2: CLIENTES (Fundo Branco Compacto) */}
-        {/* Reduzi o padding vertical para py-6 (bem mais justo) */}
         <section className="py-6 bg-white overflow-hidden">
           <div className="max-w-full mx-auto">
-            {/* Título com margem reduzida (mb-8) */}
             <p className="text-sm text-black font-bold uppercase tracking-widest mb-8 text-center">
               Quem confia no nosso olhar
             </p>
@@ -91,7 +90,6 @@ export default function Home() {
         </section>
 
         {/* --- TRANSITION 2: BRANCO PARA PRETO --- */}
-        {/* Reduzi para h-32 */}
         <div className="w-full h-32 bg-gradient-to-b from-white to-black pointer-events-none" />
 
         {/* SESSÃO 3: O QUE FAZEMOS */}

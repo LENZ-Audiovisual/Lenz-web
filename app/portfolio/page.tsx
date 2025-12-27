@@ -26,6 +26,20 @@ interface ClientData {
 // --- SEUS DADOS AQUI ---
 const clientsData: ClientData[] = [
   {
+    id: "sinicon",
+    name: "Sinicon",
+    logo: "/sinicon.png",
+    description: "Sindicato Nacional da Indústria da Construção Pesada - Infraestrutura.",
+    projects: [] // EM BREVE
+  },
+  {
+    id: "semrotulo",
+    name: "Sem Rótulo",
+    logo: "/semrotulo.png",
+    description: "Projetos autênticos e criativos.",
+    projects: []
+  },
+  {
     id: "estadao",
     name: "Estadão",
     logo: "/estadao.png",
@@ -181,7 +195,7 @@ export default function Portfolio() {
                 className="group relative aspect-square bg-white rounded-2xl flex items-center justify-center p-8 transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl overflow-hidden"
               >
                 <div className="relative w-full h-full p-4">
-                  {/* LOGOS COLORIDAS (Sem grayscale) */}
+                  {/* LOGOS COLORIDAS */}
                   <Image
                     src={client.logo}
                     alt={client.name}

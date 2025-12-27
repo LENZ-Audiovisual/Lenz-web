@@ -11,7 +11,7 @@ const clients = [
   { name: "Estadão", logo: "/estadao.png" },
   { name: "HY Produções", logo: "/hy.png" },
   { name: "Sem Rótulo", logo: "/semrotulo.png" },
-  { name: "Sinicon", logo: "/sinicon.png" }, // NOVO CLIENTE
+  { name: "Sinicon", logo: "/sinicon.png" },
 ];
 
 export default function Home() {
@@ -101,10 +101,16 @@ export default function Home() {
                 QUE PRENDEM.
               </h2>
               <p className="text-lg text-neutral-400 leading-relaxed">
-                Da captação dinâmica com gimbals de alta precisão até a colorimetria que define o mood. Nossa pós-produção não conserta erros, ela eleva a narrativa.
+                Da adrenalina do real-time à complexidade técnica de grandes transmissões. Entregamos a agilidade que o digital exige com a estética que sua marca merece.
               </p>
+              {/* LISTA ATUALIZADA - REMOVIDO "SOCIAL MEDIA" */}
               <ul className="space-y-4 pt-4">
-                {["Direção de Fotografia", "Edição & Color Grading", "Cobertura de Eventos", "Conteúdo para Redes"].map((item) => (
+                {[
+                  "Cobertura Real-Time", 
+                  "Transmissão de Eventos & Lives", 
+                  "Podcasts & Videocasts", 
+                  "Conteúdo Vertical & Reels"
+                ].map((item) => (
                   <li key={item} className="flex items-center gap-4 text-xl font-medium border-b border-white/10 pb-4">
                     <span className="w-2 h-2 bg-blue-500 rounded-full" />
                     {item}

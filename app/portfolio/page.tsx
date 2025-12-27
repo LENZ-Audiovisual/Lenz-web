@@ -23,7 +23,7 @@ interface ClientData {
   projects: Project[];
 }
 
-// --- SEUS DADOS AQUI (Configure seus vídeos reais) ---
+// --- SEUS DADOS AQUI ---
 const clientsData: ClientData[] = [
   {
     id: "estadao",
@@ -131,7 +131,7 @@ export default function Portfolio() {
   const [selectedClient, setSelectedClient] = useState<ClientData | null>(null);
   const [currentVideo, setCurrentVideo] = useState<string | null>(null);
 
-  // Função inteligente de Embed (YouTube longo, curto ou Vimeo)
+  // Função inteligente de Embed
   const getEmbedUrl = (url: string) => {
     if (!url) return "";
     const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -171,26 +171,25 @@ export default function Portfolio() {
           </div>
         )}
 
-        {/* NÍVEL 1: GRID DE CLIENTES (CAIXINHAS BRANCAS) */}
+        {/* NÍVEL 1: GRID DE CLIENTES */}
         {!selectedClient && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             {clientsData.map((client) => (
               <button
                 key={client.id}
                 onClick={() => setSelectedClient(client)}
-                // AQUI ESTÁ A MUDANÇA PARA FUNDO BRANCO
                 className="group relative aspect-square bg-white rounded-2xl flex items-center justify-center p-8 transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl overflow-hidden"
               >
                 <div className="relative w-full h-full p-4">
-                  {/* Logo em preto e branco que fica colorida no hover */}
+                  {/* LOGOS COLORIDAS (Sem grayscale) */}
                   <Image
                     src={client.logo}
                     alt={client.name}
                     fill
-                    className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
+                    className="object-contain transition-all duration-500"
                   />
                 </div>
-                {/* Texto agora é ESCURO para aparecer no fundo branco */}
+                {/* Texto escuro no fundo branco */}
                 <div className="absolute bottom-4 left-0 w-full text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-xs font-bold text-neutral-900 uppercase tracking-widest">Ver Projetos</span>
                 </div>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CheckCircle2, MessageSquare, Download, Play, Lock } from "lucide-react";
 import Image from "next/image";
 
-// BANCO DE DADOS (Movido para cá)
+// BANCO DE DADOS
 const PROJECTS: any = {
   "nicbr": {
     client: "NIC.br",

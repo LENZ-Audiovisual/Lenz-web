@@ -1,164 +1,112 @@
-'use client'; // Necessário para animações e controle de estado
+"use client";
 
-import React from 'react';
 import Navbar from "../components/Navbar";
-import { useForm, ValidationError } from '@formspree/react';
+import Footer from "../components/Footer"; // Importe o novo Footer
+import { Mail, Phone, MapPin, ArrowRight, Instagram, Linkedin } from "lucide-react";
 
-export default function ContactPage() {
-  // Configuração do Formspree
-  // O hook gerencia o estado: se está enviando, se deu erro, ou se foi sucesso
-  const [state, handleSubmit] = useForm("xojqvrep");
-
+export default function Contact() {
   return (
-    <div className="bg-black min-h-screen text-white selection:bg-blue-500/30">
+    <div className="min-h-screen bg-black text-white selection:bg-purple-500/30">
       <Navbar />
-
-      <main className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      
+      <main className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
           
-          {/* COLUNA DA ESQUERDA: Texto e Infos (Sempre visível) */}
+          {/* LADO ESQUERDO: INFOS */}
           <div className="space-y-12">
             <div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-[0.9]">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6">
                 VAMOS CRIAR <br />
-                <span className="text-neutral-500">ALGO ÉPICO?</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
+                  O NOVO?
+                </span>
               </h1>
-              <p className="text-lg text-neutral-400 max-w-md leading-relaxed">
-                Estamos prontos para ouvir sua ideia. Preencha o formulário ou entre em contato direto pelos canais abaixo.
+              <p className="text-xl text-neutral-400 leading-relaxed max-w-md">
+                Toda grande produção começa com uma conversa. Conte sua ideia, nós transformamos em filme.
               </p>
             </div>
 
             <div className="space-y-6">
-              <div>
-                <h3 className="text-sm font-mono text-neutral-500 uppercase tracking-widest mb-2">Contato Direto</h3>
-                <a href="mailto:lampejo.rec@gmail.com" className="block text-2xl font-medium hover:text-blue-400 transition-colors">
-                  lampejo.rec@gmail.com
-                </a>
-                
-                <a 
-                  href="https://wa.me/5561994079423" 
-                  target="_blank"
-                  className="block text-2xl font-medium hover:text-green-400 transition-colors mt-2"
-                >
-                  +55 61 9 9407-9423
-                </a>
-              </div>
+              <ContactItem icon={Mail} title="Email" value="contato@lampejo.rec.br" link="mailto:contato@lampejo.rec.br" />
+              <ContactItem icon={Phone} title="WhatsApp" value="+55 61 9 9407-9423" link="https://wa.me/5561994079423" />
+              <ContactItem icon={MapPin} title="Estúdio" value="Lago Sul - Brasília, DF" />
+            </div>
 
-              <div>
-                <h3 className="text-sm font-mono text-neutral-500 uppercase tracking-widest mb-2">Localização</h3>
-                <p className="text-xl text-white">Brasília, DF — Brasil</p>
-                <p className="text-neutral-500">Atendendo em todo território nacional.</p>
+            <div className="pt-8 border-t border-white/10">
+              <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 mb-4">Nossas Redes</p>
+              <div className="flex gap-4">
+                <SocialBtn icon={Instagram} link="#" />
+                <SocialBtn icon={Linkedin} link="#" />
               </div>
             </div>
           </div>
 
-          {/* COLUNA DA DIREITA: Formulário ou Mensagem de Sucesso */}
-          <div className="bg-neutral-900/30 p-8 md:p-10 rounded-3xl border border-white/5 backdrop-blur-sm min-h-[600px] flex flex-col justify-center">
-            
-            {/* LÓGICA: Se enviou com sucesso, mostra mensagem. Se não, mostra form. */}
-            {state.succeeded ? (
-              <div className="text-center animate-in fade-in zoom-in duration-500">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-500/10 text-green-500 mb-6 border border-green-500/20">
-                  <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+          {/* LADO DIREITO: FORMULÁRIO BRIEFING */}
+          <div className="bg-neutral-900/50 p-8 md:p-12 rounded-3xl border border-white/10">
+            <h3 className="text-2xl font-bold mb-8">Briefing Rápido</h3>
+            <form className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs uppercase font-bold text-neutral-500">Seu Nome</label>
+                  <input type="text" className="w-full bg-black border border-white/20 rounded-lg p-4 focus:border-purple-500 outline-none transition-colors" placeholder="Nome" />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4">Mensagem Recebida!</h3>
-                <p className="text-neutral-400 text-lg leading-relaxed">
-                  Obrigado pelo contato. Nossa equipe já recebeu sua notificação e retornaremos em breve.
-                </p>
-                <button 
-                  onClick={() => window.location.reload()}
-                  className="mt-8 text-sm text-neutral-500 hover:text-white underline decoration-neutral-700 underline-offset-4"
-                >
-                  Enviar outra mensagem
-                </button>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase font-bold text-neutral-500">Empresa</label>
+                  <input type="text" className="w-full bg-black border border-white/20 rounded-lg p-4 focus:border-purple-500 outline-none transition-colors" placeholder="@Empresa" />
+                </div>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Seu Nome</label>
-                    <input 
-                      id="nome"
-                      name="nome"
-                      type="text" 
-                      placeholder="João Silva" 
-                      required
-                      className="w-full bg-transparent border-b border-neutral-700 py-3 text-lg focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Empresa (Opcional)</label>
-                    <input 
-                      id="empresa"
-                      name="empresa"
-                      type="text" 
-                      placeholder="Sua Marca Ltda" 
-                      className="w-full bg-transparent border-b border-neutral-700 py-3 text-lg focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
-                    />
-                  </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Email Corporativo</label>
-                  <input 
-                    id="email"
-                    name="email"
-                    type="email" 
-                    placeholder="joao@empresa.com" 
-                    required
-                    className="w-full bg-transparent border-b border-neutral-700 py-3 text-lg focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700"
-                  />
-                  <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-sm" />
-                </div>
+              <div className="space-y-2">
+                <label className="text-xs uppercase font-bold text-neutral-500">Qual o objetivo?</label>
+                <select className="w-full bg-black border border-white/20 rounded-lg p-4 focus:border-purple-500 outline-none transition-colors text-neutral-300">
+                  <option>Institucional / Manifesto</option>
+                  <option>Cobertura de Evento</option>
+                  <option>Conteúdo para Redes (Reels)</option>
+                  <option>Podcast / Videocast</option>
+                  <option>Outro</option>
+                </select>
+              </div>
 
-                <div className="space-y-4">
-                  <label className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">No que podemos ajudar?</label>
-                  <div className="flex flex-wrap gap-3">
-                    {["Produção Publicitária", "Conteúdo Digital", "Institucional", "Cobertura de Evento", "Outro"].map((item) => (
-                      <label key={item} className="cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          name="interesse" 
-                          value={item} 
-                          className="hidden peer" 
-                        />
-                        <div className="px-4 py-2 border border-neutral-700 rounded-full text-sm text-neutral-400 hover:border-neutral-500 peer-checked:bg-white peer-checked:text-black peer-checked:border-white transition-all">
-                          {item}
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
+              <div className="space-y-2">
+                <label className="text-xs uppercase font-bold text-neutral-500">Mensagem / Detalhes</label>
+                <textarea rows={4} className="w-full bg-black border border-white/20 rounded-lg p-4 focus:border-purple-500 outline-none transition-colors" placeholder="Conte um pouco sobre o projeto..." />
+              </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Detalhes do Projeto</label>
-                  <textarea 
-                    id="mensagem"
-                    name="mensagem"
-                    rows={4}
-                    placeholder="Conte um pouco sobre o briefing, prazos ou referências..." 
-                    required
-                    className="w-full bg-transparent border-b border-neutral-700 py-3 text-lg focus:outline-none focus:border-white transition-colors placeholder:text-neutral-700 resize-none"
-                  ></textarea>
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={state.submitting}
-                  className="w-full bg-white text-black font-bold py-4 rounded-xl text-lg hover:bg-neutral-200 transform hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {state.submitting ? "ENVIANDO..." : "ENVIAR MENSAGEM"}
-                </button>
-
-              </form>
-            )}
+              <button className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 group">
+                ENVIAR PROJETO <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </form>
           </div>
 
         </div>
       </main>
+      <Footer />
     </div>
   );
+}
+
+function ContactItem({ icon: Icon, title, value, link }: any) {
+  return (
+    <div className="flex items-start gap-4">
+      <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center shrink-0">
+        <Icon className="text-purple-400" size={20} />
+      </div>
+      <div>
+        <p className="text-xs font-bold uppercase text-neutral-500 mb-1">{title}</p>
+        {link ? (
+          <a href={link} className="text-lg font-medium hover:text-purple-400 transition-colors">{value}</a>
+        ) : (
+          <p className="text-lg font-medium">{value}</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function SocialBtn({ icon: Icon, link }: any) {
+  return (
+    <a href={link} className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all">
+      <Icon size={20} />
+    </a>
+  )
 }

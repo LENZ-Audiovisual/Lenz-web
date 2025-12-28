@@ -299,18 +299,35 @@ export default function AdminPage() {
                 <p className="text-sm text-neutral-500">Projetos ativos no momento</p>
               </div>
 
-              {/* Card 3: Financeiro Rápido (Clicável -> Financeiro) */}
+              {/* Card 3: Financeiro COM GRÁFICO VISUAL E CLICÁVEL */}
               {currentUser.role === "admin" ? (
                 <div 
                   onClick={() => setActiveTab("finance")}
-                  className="bg-neutral-900 border border-white/10 p-6 rounded-2xl cursor-pointer hover:border-green-500/50 transition-all group hover:scale-[1.02]"
+                  className="bg-neutral-900 border border-white/10 p-6 rounded-2xl cursor-pointer hover:border-green-500/50 transition-all group hover:scale-[1.02] relative overflow-hidden"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-green-500/10 rounded-lg text-green-500"><TrendingUp size={24}/></div>
-                    <span className="text-xl font-bold text-green-500">R$ {currM.gross.toLocaleString('pt-BR', {compactDisplay: "short", notation: "compact"})}</span>
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="p-3 bg-green-500/10 rounded-lg text-green-500"><TrendingUp size={24}/></div>
+                      <div className="text-right">
+                         <span className="text-2xl font-bold text-green-500 block">R$ {currM.gross.toLocaleString('pt-BR', {compactDisplay: "short", notation: "compact"})}</span>
+                         <span className="text-[10px] text-green-400 font-bold bg-green-900/30 px-2 py-1 rounded-full">
+                           {growth > 0 ? "+" : ""}{growth.toFixed(0)}% este mês
+                         </span>
+                      </div>
+                    </div>
+                    <h3 className="font-bold text-lg mb-1 group-hover:text-green-400 transition-colors">Faturamento</h3>
+                    <p className="text-sm text-neutral-500">Performance mensal</p>
                   </div>
-                  <h3 className="font-bold text-lg mb-1 group-hover:text-green-400 transition-colors">Faturamento</h3>
-                  <p className="text-sm text-neutral-500">Acumulado deste mês</p>
+
+                  {/* EFEITO VISUAL DE GRÁFICO NO FUNDO */}
+                  <div className="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-between px-6 opacity-20 group-hover:opacity-40 transition-opacity gap-2">
+                     <div className="w-full bg-green-500 rounded-t-sm h-[30%]"></div>
+                     <div className="w-full bg-green-500 rounded-t-sm h-[50%]"></div>
+                     <div className="w-full bg-green-500 rounded-t-sm h-[40%]"></div>
+                     <div className="w-full bg-green-500 rounded-t-sm h-[70%]"></div>
+                     <div className="w-full bg-green-500 rounded-t-sm h-[55%]"></div>
+                     <div className="w-full bg-green-500 rounded-t-sm h-[90%]"></div>
+                  </div>
                 </div>
               ) : (
                 <div className="bg-neutral-900 border border-white/10 p-6 rounded-2xl flex items-center justify-center text-neutral-600 cursor-not-allowed">

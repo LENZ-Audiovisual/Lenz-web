@@ -273,11 +273,7 @@ export default function AdminPage() {
             <p className="text-neutral-400 mb-12">Aqui está o resumo da operação Lampejo hoje.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {/* Card 1: Tarefas Urgentes (Clicável -> Projetos) */}
-              <div 
-                onClick={() => setActiveTab("projects")}
-                className="bg-neutral-900 border border-white/10 p-6 rounded-2xl relative overflow-hidden cursor-pointer hover:border-red-500/50 transition-all group hover:scale-[1.02]"
-              >
+              <div onClick={() => setActiveTab("projects")} className="bg-neutral-900 border border-white/10 p-6 rounded-2xl relative overflow-hidden cursor-pointer hover:border-red-500/50 transition-all group hover:scale-[1.02]">
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-red-500/10 rounded-lg text-red-500"><AlertCircle size={24}/></div>
                   <span className="text-4xl font-bold">{tasks.filter(t => t.priority === 'high' && t.status !== 'done').length}</span>
@@ -286,11 +282,7 @@ export default function AdminPage() {
                 <p className="text-sm text-neutral-500">Tarefas urgentes pendentes</p>
               </div>
 
-              {/* Card 2: Em Produção (Clicável -> Projetos) */}
-              <div 
-                onClick={() => setActiveTab("projects")}
-                className="bg-neutral-900 border border-white/10 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all group hover:scale-[1.02]"
-              >
+              <div onClick={() => setActiveTab("projects")} className="bg-neutral-900 border border-white/10 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all group hover:scale-[1.02]">
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-blue-500/10 rounded-lg text-blue-500"><Layout size={24}/></div>
                   <span className="text-4xl font-bold">{tasks.filter(t => t.status === 'doing').length}</span>
@@ -299,12 +291,8 @@ export default function AdminPage() {
                 <p className="text-sm text-neutral-500">Projetos ativos no momento</p>
               </div>
 
-              {/* Card 3: Financeiro COM GRÁFICO VISUAL E CLICÁVEL */}
               {currentUser.role === "admin" ? (
-                <div 
-                  onClick={() => setActiveTab("finance")}
-                  className="bg-neutral-900 border border-white/10 p-6 rounded-2xl cursor-pointer hover:border-green-500/50 transition-all group hover:scale-[1.02] relative overflow-hidden"
-                >
+                <div onClick={() => setActiveTab("finance")} className="bg-neutral-900 border border-white/10 p-6 rounded-2xl cursor-pointer hover:border-green-500/50 transition-all group hover:scale-[1.02] relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="flex justify-between items-start mb-4">
                       <div className="p-3 bg-green-500/10 rounded-lg text-green-500"><TrendingUp size={24}/></div>
@@ -318,8 +306,6 @@ export default function AdminPage() {
                     <h3 className="font-bold text-lg mb-1 group-hover:text-green-400 transition-colors">Faturamento</h3>
                     <p className="text-sm text-neutral-500">Performance mensal</p>
                   </div>
-
-                  {/* EFEITO VISUAL DE GRÁFICO NO FUNDO */}
                   <div className="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-between px-6 opacity-20 group-hover:opacity-40 transition-opacity gap-2">
                      <div className="w-full bg-green-500 rounded-t-sm h-[30%]"></div>
                      <div className="w-full bg-green-500 rounded-t-sm h-[50%]"></div>
@@ -336,7 +322,6 @@ export default function AdminPage() {
               )}
             </div>
             
-            {/* Lista Rápida de Tarefas */}
             <h3 className="text-sm font-bold uppercase text-neutral-500 mb-4 tracking-widest">Minhas Atividades Recentes</h3>
             <div className="bg-neutral-900/50 border border-white/5 rounded-2xl overflow-hidden">
               {tasks.slice(0, 5).map(task => (
@@ -354,11 +339,11 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* --- FINANCEIRO --- */}
-        {activeTab === "finance" && currentUser.role === "admin" && (
-           <div className={`p-8 max-w-7xl mx-auto ${showReport ? "hidden" : "block"}`}>
+        {/* --- FINANCEIRO (CORRIGIDO: SEMPRE EXIBE O CONTEÚDO SE NÃO TIVER REPORT) --- */}
+        {activeTab === "finance" && currentUser.role === "admin" && !showReport && (
+           <div className="p-8 max-w-7xl mx-auto">
              
-             {/* CABEÇALHO */}
+             {/* Header Financeiro */}
              <header className="flex flex-col xl:flex-row justify-between items-end mb-8 gap-6">
                <div>
                   <p className="text-xs uppercase text-purple-400 font-bold mb-2">Fluxo de Caixa</p>
@@ -374,7 +359,7 @@ export default function AdminPage() {
                </div>
              </header>
 
-             {/* KPIs */}
+             {/* KPIs (CORRIGIDOS PARA BRANCO) */}
              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                <Kpi label="Faturamento Bruto" val={currM.gross} growth={growth} />
                <Kpi label="Imposto (10% Prov.)" val={currM.provTax} sub={currM.realTax} color="text-neutral-400" />
@@ -382,7 +367,7 @@ export default function AdminPage() {
                <Kpi label="Lucro Caixa" val={currM.safeProfit} color="text-green-400" highlight />
              </div>
 
-             {/* LISTA DE CUSTOS FIXOS DO MÊS */}
+             {/* LISTA CUSTOS FIXOS */}
              {currentFixedCosts.length > 0 && (
                <div className="mb-8">
                  <h3 className="text-xs font-bold uppercase text-neutral-500 mb-3 tracking-widest flex items-center gap-2"><Lock size={12}/> Custos Fixos deste mês</h3>
@@ -397,7 +382,7 @@ export default function AdminPage() {
                </div>
              )}
 
-             {/* FORMULÁRIO FINANCEIRO */}
+             {/* FORMULÁRIO */}
              <div className="bg-neutral-900/50 border border-white/5 p-6 rounded-2xl mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                   <div className="md:col-span-2"><input type="date" value={newTransDate} onChange={e => setNewTransDate(e.target.value)} className="w-full bg-black border border-white/10 rounded-lg p-3 text-white text-sm" /></div>
@@ -412,7 +397,7 @@ export default function AdminPage() {
                 </div>
              </div>
 
-             {/* LISTA DE TRANSAÇÕES */}
+             {/* LISTA TRANSAÇÕES */}
              <div className="space-y-1">
                {currentMonthTrans.length === 0 && <p className="text-neutral-600 text-center text-sm py-10">Nenhum lançamento extra neste mês.</p>}
                {currentMonthTrans.map(t => (
@@ -430,7 +415,7 @@ export default function AdminPage() {
                ))}
              </div>
 
-             {/* MODAL DE ASSINATURAS */}
+             {/* MODAL ASSINATURAS */}
              {showRecurringModal && (
                <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
                  <div className="bg-neutral-900 border border-white/10 rounded-2xl p-6 w-full max-w-2xl shadow-2xl">
@@ -438,36 +423,22 @@ export default function AdminPage() {
                      <h3 className="text-xl font-bold flex items-center gap-2"><CreditCard size={18}/> Gestão de Custos Fixos</h3>
                      <button onClick={() => setShowRecurringModal(false)}><X size={20}/></button>
                    </div>
-                   
                    <div className="bg-black/50 p-4 rounded-xl mb-6 border border-white/10">
                      <div className="grid grid-cols-12 gap-3 mb-3">
                        <div className="col-span-4"><input value={newRecDesc} onChange={e => setNewRecDesc(e.target.value)} placeholder="Nome (Ex: Contador)" className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-white"/></div>
                        <div className="col-span-3"><input type="number" value={newRecAmount} onChange={e => setNewRecAmount(e.target.value)} placeholder="Valor R$" className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-white"/></div>
                        <div className="col-span-3"><select value={newRecFreq} onChange={e => setNewRecFreq(e.target.value as any)} className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-neutral-400"><option value="monthly">Mensal</option><option value="yearly">Anual</option></select></div>
                        <div className="col-span-2">
-                         {newRecFreq === 'monthly' ? (
-                           <input type="number" min="1" max="31" value={newRecDay} onChange={e => setNewRecDay(e.target.value)} placeholder="Dia" className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-white"/>
-                         ) : (
-                           <select value={newRecMonth} onChange={e => setNewRecMonth(e.target.value)} className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-neutral-400">{["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"].map((m,i)=><option key={i} value={i}>{m}</option>)}</select>
-                         )}
+                         {newRecFreq === 'monthly' ? (<input type="number" min="1" max="31" value={newRecDay} onChange={e => setNewRecDay(e.target.value)} placeholder="Dia" className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-white"/>) : (<select value={newRecMonth} onChange={e => setNewRecMonth(e.target.value)} className="w-full bg-neutral-900 border border-white/10 rounded p-2 text-sm text-neutral-400">{["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"].map((m,i)=><option key={i} value={i}>{m}</option>)}</select>)}
                        </div>
                      </div>
                      <button onClick={addRecurring} className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded font-bold text-sm">Adicionar Custo Recorrente</button>
                    </div>
-
                    <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
                      {recurringExpenses.map(rec => (
                        <div key={rec.id} className="flex justify-between items-center p-3 bg-black/30 border border-white/5 rounded-lg">
-                         <div>
-                           <p className="font-bold text-sm">{rec.description}</p>
-                           <p className="text-xs text-neutral-500">
-                             {rec.frequency === 'monthly' ? `Todo dia ${rec.dueDay}` : `Anual (em ${["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][rec.dueMonth || 0]})`}
-                           </p>
-                         </div>
-                         <div className="flex items-center gap-4">
-                           <span className="font-bold text-white">R$ {rec.amount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-                           <button onClick={() => setRecurringExpenses(recurringExpenses.filter(r => r.id !== rec.id))} className="text-neutral-600 hover:text-red-500"><Trash2 size={14}/></button>
-                         </div>
+                         <div><p className="font-bold text-sm">{rec.description}</p><p className="text-xs text-neutral-500">{rec.frequency === 'monthly' ? `Todo dia ${rec.dueDay}` : `Anual (em ${["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][rec.dueMonth || 0]})`}</p></div>
+                         <div className="flex items-center gap-4"><span className="font-bold text-white">R$ {rec.amount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span><button onClick={() => setRecurringExpenses(recurringExpenses.filter(r => r.id !== rec.id))} className="text-neutral-600 hover:text-red-500"><Trash2 size={14}/></button></div>
                        </div>
                      ))}
                      {recurringExpenses.length === 0 && <p className="text-center text-neutral-600 text-sm">Nenhum custo fixo cadastrado.</p>}
@@ -475,6 +446,24 @@ export default function AdminPage() {
                  </div>
                </div>
              )}
+           </div>
+        )}
+
+        {/* --- RELATÓRIO FINANCEIRO (FIXED - CORRIGIDO) --- */}
+        {showReport && (
+           <div className="fixed inset-0 z-[200] bg-white overflow-auto flex justify-center p-12 text-black animate-in fade-in">
+             <div id="printable-area" className="w-[210mm] min-h-[297mm] p-[15mm] relative bg-white">
+                <div className="flex justify-between items-end border-b-4 border-black pb-6 mb-12">
+                  <div><h1 className="text-6xl font-bold tracking-tighter mb-2">RELATÓRIO<br/>MENSAL</h1><p className="text-sm font-bold uppercase tracking-widest text-neutral-500">{selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</p></div>
+                  <div className="text-right"><div className="text-4xl font-bold mb-1">{growth > 0 ? "+" : ""}{growth.toFixed(0)}%</div><p className="text-[10px] uppercase font-bold text-neutral-500">Crescimento vs. Mês Anterior</p></div>
+                </div>
+                <div className="grid grid-cols-2 gap-12 mb-16">
+                   <div className="text-lg leading-relaxed text-justify"><h3 className="font-bold uppercase mb-2">Análise</h3>{currM.gross > prevM.gross ? "Resultado positivo com aumento de faturamento." : "Retração de faturamento. Atenção necessária."} {currM.safeProfit > 0 ? " Operação lucrativa com caixa positivo." : " Prejuízo no período. Rever custos."}</div>
+                   <div className="bg-neutral-100 p-6 rounded-xl text-sm space-y-2"><h3 className="font-bold uppercase mb-4">Raio-X</h3><div className="flex justify-between border-b pb-1"><span>Imposto Real</span><b>R$ {currM.realTax.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</b></div><div className="flex justify-between border-b pb-1"><span>Provisão (10%)</span><b>R$ {currM.provTax.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</b></div><div className="flex justify-between pt-2 text-green-600 font-bold"><span>Líquido</span><b>R$ {currM.safeProfit.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</b></div></div>
+                </div>
+                <div className="grid grid-cols-3 gap-6"><div className="border border-black p-4"><span className="text-xs uppercase text-neutral-500">Faturamento</span><p className="text-2xl font-bold">R$ {currM.gross.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p></div><div className="border border-black p-4 bg-black text-white"><span className="text-xs uppercase text-neutral-400">Caixa</span><p className="text-2xl font-bold">R$ {currM.safeProfit.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p></div><div className="border border-black p-4"><span className="text-xs uppercase text-neutral-500">Despesas</span><p className="text-2xl font-bold text-red-600">R$ {currM.totalExpenses.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p></div></div>
+                <div className="fixed bottom-10 right-10 flex gap-4 no-print"><button onClick={() => setShowReport(false)} className="bg-neutral-200 text-black px-6 py-3 rounded-full font-bold hover:bg-neutral-300">Voltar</button><button onClick={() => window.print()} className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-neutral-800">Imprimir PDF</button></div>
+             </div>
            </div>
         )}
 

@@ -1,13 +1,39 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Ou a fonte que você estiver usando
+import { Inter, Space_Grotesk } from "next/font/google";
+import Script from "next/script"; // Componente otimizado do Next.js
 import "./globals.css";
-import Footer from "./components/Footer"; // <--- 1. Importe o Footer
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
+
+// SEU ID DO GOOGLE ANALYTICS
+const GA_MEASUREMENT_ID = "G-B9XLZL73HX"; 
 
 export const metadata: Metadata = {
-  title: "Lampejo | Produtora Audiovisual",
-  description: "Audiovisual na velocidade do agora.",
+  title: "Lampejo | Audiovisual na velocidade do agora",
+  description: "Produtora audiovisual em Brasília focada em narrativas de impacto. Do roteiro ao play.",
+  keywords: ["Produtora de Vídeo", "Brasília", "Audiovisual", "Filmmaker", "Edição", "Motion Graphics", "Lampejo"],
+  authors: [{ name: "Lampejo Audiovisual" }],
+  openGraph: {
+    title: "Lampejo | Audiovisual na velocidade do agora",
+    description: "Encurtamos a distância entre a ideia e o play.",
+    url: "https://lampejo.rec.br",
+    siteName: "Lampejo",
+    locale: "pt_BR",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.jpg", // Certifique-se de ter essa imagem em public/
+        width: 1200,
+        height: 630,
+        alt: "Lampejo Audiovisual",
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -16,15 +42,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      <body className={inter.className}>
+    <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className="font-sans bg-black text-white antialiased">
         
-        {/* O conteúdo das páginas (Home, Contato, etc) entra aqui */}
+        {/* SCRIPT 1: Carrega a biblioteca do Google (gtag.js) */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        
+        {/* SCRIPT 2: Configuração Inline */}
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+
         {children}
-
-        {/* O Footer ficará fixo no final de tudo */}
-        <Footer /> 
-
       </body>
     </html>
   );

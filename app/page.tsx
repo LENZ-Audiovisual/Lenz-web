@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react"; // Adicionado useRef e useEffect
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Link from "next/link";
 import { ArrowRight, Play, Quote } from "lucide-react";
 
-// DADOS DOS SERVIÇOS
 const SERVICES = [
   {
     id: 0,
@@ -72,32 +71,43 @@ const TESTIMONIALS = [
 
 export default function Home() {
   const [activeService, setActiveService] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // EFEITO PARA FORÇAR O AUTOPLAY NO MOBILE
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true; // Essencial para iOS
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(error => {
+        console.log("Autoplay bloqueado pelo navegador:", error);
+      });
+    }
+  }, []);
 
   return (
     <div className="bg-black text-white selection:bg-purple-500/30 overflow-x-hidden">
       <Navbar />
 
       <main>
-        {/* SESSÃO 1: HERO (VÍDEO BACKGROUND) */}
+        {/* SESSÃO 1: HERO (VÍDEO BACKGROUND OTIMIZADO) */}
         <section className="h-screen flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
           
           {/* VIDEO BACKGROUND */}
           <div className="absolute inset-0 z-0">
-            {/* Overlay Escuro */}
-            <div className="absolute inset-0 bg-black/70 z-10" />
+            {/* Overlay Escuro para o texto aparecer */}
+            <div className="absolute inset-0 bg-black/60 z-10" />
             
-            {/* Vídeo em Loop */}
+            {/* Vídeo em Loop Otimizado */}
             <video 
+              ref={videoRef}
               autoPlay 
               loop 
               muted 
               playsInline 
               className="w-full h-full object-cover opacity-60"
-              poster="/bg-home.jpg" // Coloque uma imagem de fundo caso o vídeo falhe
+              poster="/poster-home.jpg" // IMAGEM LEVE QUE CARREGA ANTES DO VÍDEO
             >
               <source src="/hero.mp4" type="video/mp4" />
-              {/* Fallback para navegadores antigos */}
-              Seu navegador não suporta vídeos.
             </video>
           </div>
           
@@ -151,7 +161,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SESSÃO 2.5: DEPOIMENTOS (NOVA) */}
+        {/* SESSÃO 2.5: DEPOIMENTOS */}
         <section className="py-20 bg-neutral-900 border-y border-white/5">
           <div className="max-w-6xl mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-8">

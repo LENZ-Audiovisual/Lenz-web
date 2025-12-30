@@ -6,13 +6,27 @@ import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Se rolar para baixo e já tiver passado de 100px, esconde o menu
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        // Se rolar para cima, mostra o menu
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   // Bloqueia o scroll da página quando o menu mobile está aberto
   useEffect(() => {
@@ -26,9 +40,9 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled || isOpen ? "bg-black/80 backdrop-blur-md border-b border-white/10" : "bg-transparent"
-        }`}
+        className={`fixed top-0 w-full z-50 transition-transform duration-300 ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        } ${lastScrollY > 50 ? "bg-black/80 backdrop-blur-md border-b border-white/10" : "bg-transparent"}`}
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-50">
           
@@ -57,7 +71,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MENU MOBILE (FIXO FORA DA BARRA DE NAVEGAÇÃO PARA EVITAR BUGS DE LAYOUT) */}
+      {/* MENU MOBILE (FIXO E INDEPENDENTE DA ANIMAÇÃO DO SCROLL) */}
       <div 
         className={`fixed inset-0 bg-black z-[999] flex flex-col items-center justify-center gap-8 text-3xl font-bold tracking-tighter transition-all duration-500 ${
           isOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-10 pointer-events-none"

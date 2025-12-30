@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
-import Script from "next/script"; // Componente otimizado do Next.js
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
 
-// SEU ID DO GOOGLE ANALYTICS
 const GA_MEASUREMENT_ID = "G-B9XLZL73HX"; 
 
 export const metadata: Metadata = {
@@ -21,47 +20,46 @@ export const metadata: Metadata = {
     siteName: "Lampejo",
     locale: "pt_BR",
     type: "website",
-    images: [
-      {
-        url: "/og-image.jpg", // Certifique-se de ter essa imagem em public/
-        width: 1200,
-        height: 630,
-        alt: "Lampejo Audiovisual",
-      },
-    ],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Lampejo Audiovisual" }],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="font-sans bg-black text-white antialiased">
-        
-        {/* SCRIPT 1: Carrega a biblioteca do Google (gtag.js) */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        />
-        
-        {/* SCRIPT 2: Configuração Inline */}
+        <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
-            });
+            gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
           `}
         </Script>
+        
+        {/* SEO TÉCNICO (JSON-LD) */}
+        <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VideoProductionService",
+            "name": "Lampejo Audiovisual",
+            "url": "https://lampejo.rec.br",
+            "logo": "https://lampejo.rec.br/logo-lampejo.png",
+            "areaServed": "Brasília",
+            "description": "Produtora audiovisual focada em narrativas de impacto e velocidade de entrega.",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Brasília",
+              "addressRegion": "DF",
+              "addressCountry": "BR"
+            },
+            "sameAs": [
+              "https://instagram.com/lampejo.rec"
+            ]
+          })
+        }} />
 
         {children}
       </body>

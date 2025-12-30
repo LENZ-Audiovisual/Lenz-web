@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react"; // Adicionado useRef e useEffect
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Link from "next/link";
 import { ArrowRight, Play, Quote } from "lucide-react";
 
+// DADOS DOS SERVIÇOS
 const SERVICES = [
   {
     id: 0,
@@ -71,44 +72,36 @@ const TESTIMONIALS = [
 
 export default function Home() {
   const [activeService, setActiveService] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // EFEITO PARA FORÇAR O AUTOPLAY NO MOBILE
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true; // Essencial para iOS
-      videoRef.current.muted = true;
-      videoRef.current.play().catch(error => {
-        console.log("Autoplay bloqueado pelo navegador:", error);
-      });
-    }
-  }, []);
 
   return (
     <div className="bg-black text-white selection:bg-purple-500/30 overflow-x-hidden">
       <Navbar />
 
       <main>
-        {/* SESSÃO 1: HERO (VÍDEO BACKGROUND OTIMIZADO) */}
+        {/* SESSÃO 1: HERO */}
         <section className="h-screen flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
           
-          {/* VIDEO BACKGROUND */}
+          {/* VIDEO BACKGROUND (INJEÇÃO DE HTML PURO PARA FORÇAR MOBILE) */}
           <div className="absolute inset-0 z-0">
-            {/* Overlay Escuro para o texto aparecer */}
             <div className="absolute inset-0 bg-black/60 z-10" />
-            
-            {/* Vídeo em Loop Otimizado */}
-            <video 
-              ref={videoRef}
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              className="w-full h-full object-cover opacity-60"
-              poster="/poster-home.jpg" // IMAGEM LEVE QUE CARREGA ANTES DO VÍDEO
-            >
-              <source src="/hero.mp4" type="video/mp4" />
-            </video>
+            <div 
+              className="w-full h-full"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  <video 
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline 
+                    webkit-playsinline 
+                    poster="/poster-home.jpg"
+                    class="w-full h-full object-cover opacity-60"
+                  >
+                    <source src="/hero.mp4" type="video/mp4" />
+                  </video>
+                `
+              }}
+            />
           </div>
           
           <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-8 z-10 animate-in slide-in-from-bottom-10 fade-in duration-1000">

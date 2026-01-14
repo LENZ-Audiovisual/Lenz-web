@@ -58,7 +58,7 @@ export default function Footer() {
             <address className="text-sm not-italic text-neutral-400 leading-relaxed">
               Lago Sul, Brasília - DF<br />
               Brasil<br />
-              <span className="block mt-4 text-xs text-neutral-600">CNPJ 06.303.013/0001-86</span>
+              <span className="block mt-4 text-xs text-neutral-600">CNPJ 63.030.132/0001-86</span>
             </address>
           </div>
         </div>

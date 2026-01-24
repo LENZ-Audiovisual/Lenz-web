@@ -6,10 +6,10 @@ import {
   LayoutDashboard, FileText, Settings, Plus, 
   Trash2, Printer, CheckCircle, 
   ArrowUpRight, ArrowDownRight, DollarSign, 
-  ChevronLeft, LogOut, Lock, Users, Globe, Briefcase, Link, MessageSquare, Upload, Star, FileCheck, TrendingUp, Camera, Box, Database
+  ChevronLeft, LogOut, Lock, Users, Globe, Briefcase, Link, MessageSquare, Upload, Star, FileCheck, TrendingUp, Camera, Box, Database, MonitorPlay, Film
 } from "lucide-react";
 import { 
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  XAxis, YAxis, Tooltip, ResponsiveContainer, 
   BarChart, Bar, Cell, AreaChart, Area
 } from 'recharts';
 import Navbar from "../components/Navbar";
@@ -28,13 +28,6 @@ const LOGO_DB: Record<string, string> = {
 };
 
 const MESES_FULL = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-
-const CATEGORIAS_EQUIPAMENTO = [
-  "Câmeras & Corpos", "Lentes & Óticas", "Iluminação & Grip", "Áudio & Microfones", 
-  "Drones & Aéreos", "Estabilizadores & Gimbals", "Tripés & Suportes", 
-  "Cabos & Conectividade", "Mídia & Armazenamento", "Computadores & Edição", 
-  "Live Streaming & Switchers", "Cases & Transporte"
-];
 
 const formatarDataSimples = (dataStr: string) => {
   if (!dataStr) return "--";
@@ -58,7 +51,7 @@ function KPICard({ title, value, customValue, color, icon, bg = "bg-[#0f0f0f]" }
     <div className={`${bg} border border-white/5 p-6 rounded-[32px] flex flex-col justify-between aspect-video relative overflow-hidden group`}>
       <div className="absolute right-0 top-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">{icon}</div>
       <div className="flex justify-between items-center text-neutral-400 text-[10px] font-black uppercase tracking-widest relative z-10">{title} {icon}</div>
-      <p className={`text-2xl font-black tracking-tighter relative z-10 ${color}`}>{customValue || (value ? value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "R$ 0,00")}</p>
+      <p className={`text-2xl font-black tracking-tighter relative z-10 ${color}`}>{customValue || value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
     </div>
   );
 }
@@ -91,7 +84,7 @@ function LoginView() {
 }
 
 // ============================================================================
-// 3. TELAS (VIEWS)
+// 3. COMPONENTES DAS ABAS
 // ============================================================================
 
 function DashboardView({ propostas, financeiro, clientes, projetos }: any) {
@@ -126,7 +119,7 @@ function DashboardView({ propostas, financeiro, clientes, projetos }: any) {
         <div className="space-y-8 animate-in fade-in duration-500 pb-20 text-white">
           <h1 className="text-4xl font-black tracking-tighter uppercase">Intelligence Dashboard</h1>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <KPICard title="Receita Aprovada" value={stats.totalAprovado} color="text-green-400" icon={<TrendingUp size={24}/>} />
+            <KPICard title="Receita Bruta" value={stats.totalAprovado} color="text-green-400" icon={<TrendingUp size={24}/>} />
             <KPICard title="Saldo em Caixa" value={stats.saldo} color="text-white" bg="bg-purple-600 shadow-purple-500/20" icon={<DollarSign size={24}/>} />
             <KPICard title="Projetos Ativos" customValue={stats.ativos.toString()} color="text-blue-400" icon={<Briefcase size={24}/>} />
             <KPICard title="Base Clientes" customValue={stats.totalClientes.toString()} color="text-purple-400" icon={<Users size={24}/>} />
@@ -164,6 +157,81 @@ function DashboardView({ propostas, financeiro, clientes, projetos }: any) {
     );
 }
 
+// ------------------------------------------------------------------
+// PORTFÓLIO CMS (NOVO)
+// ------------------------------------------------------------------
+function PortfolioView({ portfolio, refresh, session }: any) {
+    const [editing, setEditing] = useState<any>(null);
+    const [uploading, setUploading] = useState(false);
+
+    async function handleFileUpload(e: any) {
+        const file = e.target.files[0]; if (!file) return; setUploading(true);
+        const fileName = `portfolio/${Math.random()}.${file.name.split('.').pop()}`;
+        await supabase.storage.from('logos').upload(fileName, file); // Usando bucket logos por praticidade
+        const { data } = supabase.storage.from('logos').getPublicUrl(fileName);
+        setEditing({ ...editing, capa_url: data.publicUrl }); setUploading(false);
+    }
+
+    async function handleSave() {
+        if (!editing.titulo) return alert("Título obrigatório");
+        const { id, ...data } = editing;
+        const res = editing.id === 'new' 
+            ? await supabase.from('portfolio').insert([{ ...data, user_id: session.user.id }]) 
+            : await supabase.from('portfolio').update(data).eq('id', editing.id);
+        if (res.error) alert(res.error.message); else { setEditing(null); refresh(); }
+    }
+
+    if (editing) return (
+        <div className="max-w-4xl mx-auto space-y-6 text-white animate-in slide-in-from-right">
+            <button onClick={() => setEditing(null)} className="text-neutral-500 flex items-center gap-2"><ChevronLeft size={16}/> Voltar</button>
+            <div className="bg-[#0f0f0f] p-10 rounded-[48px] border border-white/5 space-y-6 shadow-2xl">
+                <h2 className="text-3xl font-black uppercase tracking-tighter">Gerenciar Job</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                        <input value={editing.titulo || ""} onChange={e => setEditing({...editing, titulo: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Título do Job" />
+                        <input value={editing.cliente || ""} onChange={e => setEditing({...editing, cliente: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Nome do Cliente" />
+                        <select value={editing.categoria || "Evento"} onChange={e => setEditing({...editing, categoria: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white">
+                            <option value="Evento">Evento</option><option value="Publicidade">Publicidade</option><option value="Institucional">Institucional</option><option value="Drone">Drone</option>
+                        </select>
+                        <input value={editing.video_url || ""} onChange={e => setEditing({...editing, video_url: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="URL do Vídeo (Youtube/Vimeo)" />
+                        <label className="flex items-center gap-3 p-4 bg-black border border-white/10 rounded-2xl cursor-pointer">
+                            <input type="checkbox" checked={editing.destaque || false} onChange={e => setEditing({...editing, destaque: e.target.checked})} className="w-4 h-4 accent-purple-600" />
+                            <span className="text-sm font-bold uppercase">Destaque na Home</span>
+                        </label>
+                    </div>
+                    <div className="w-full h-full min-h-[250px] bg-black border border-white/10 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group">
+                         {editing.capa_url ? <img src={editing.capa_url} className="w-full h-full object-cover opacity-50" /> : <Upload className="text-neutral-500 mb-2" />}
+                         <p className="text-[10px] uppercase font-black text-neutral-500 relative z-10">{uploading ? "ENVIANDO..." : "UPLOAD CAPA (1920x1080)"}</p>
+                         <input type="file" onChange={handleFileUpload} className="absolute inset-0 opacity-0 cursor-pointer" />
+                    </div>
+                </div>
+                <button onClick={handleSave} className="w-full bg-purple-600 text-white font-black py-5 rounded-3xl uppercase text-xs shadow-xl hover:scale-[1.01] transition-all">Publicar no Site</button>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="space-y-8 text-white">
+            <div className="flex justify-between items-center"><h1 className="text-4xl font-black tracking-tighter uppercase">Portfólio CMS</h1><button onClick={() => setEditing({id:'new', titulo:'', destaque: false})} className="bg-white text-black px-8 py-4 rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl"><Plus size={18}/> Adicionar Job</button></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {portfolio.map((item: any) => (
+                    <div key={item.id} className="bg-[#0f0f0f] border border-white/5 rounded-[32px] overflow-hidden group hover:border-purple-500/50 transition-all relative aspect-video shadow-2xl">
+                        <img src={item.capa_url || "/bg-home.jpg"} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-20 transition-all" />
+                        <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                            {item.destaque && <span className="absolute top-4 right-4 bg-purple-600 text-white text-[8px] font-black uppercase px-2 py-1 rounded-full">Destaque</span>}
+                            <h3 className="text-xl font-black uppercase leading-tight relative z-10">{item.titulo}</h3>
+                            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest relative z-10">{item.cliente} • {item.categoria}</p>
+                            <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-all">
+                                <button onClick={() => setEditing(item)} className="p-2 bg-white text-black rounded-full hover:scale-110 transition-all"><Settings size={14}/></button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 function ClientesView({ clientes, refresh, session }: any) {
     const [editing, setEditing] = useState<any>(null);
     const [uploading, setUploading] = useState(false);
@@ -183,18 +251,13 @@ function ClientesView({ clientes, refresh, session }: any) {
     if (editing) return (
         <div className="max-w-4xl mx-auto space-y-6 text-white"><button onClick={() => setEditing(null)} className="text-neutral-500 flex items-center gap-2"><ChevronLeft size={16}/> Voltar</button>
             <div className="bg-[#0f0f0f] p-10 rounded-[48px] border border-white/5 space-y-8 shadow-2xl">
-                {/* CORREÇÃO AQUI: Adicionado || "" para evitar null */}
                 <input value={editing.nome_fantasia || ""} onChange={e => setEditing({...editing, nome_fantasia: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Nome Fantasia" />
-                <input value={editing.razao_social || ""} onChange={e => setEditing({...editing, razao_social: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Razão Social" />
-                <input value={editing.cnpj || ""} onChange={e => setEditing({...editing, cnpj: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="CNPJ" />
                 <input value={editing.endereco || ""} onChange={e => setEditing({...editing, endereco: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Endereço" />
                 <div className="w-full h-32 bg-black border border-white/10 rounded-2xl flex items-center justify-center relative overflow-hidden group">
                     {editing.logo_url ? <img src={editing.logo_url} className="h-full w-full object-contain p-4" /> : <Upload className="text-neutral-500" />}
                     <input type="file" onChange={handleFileUpload} className="absolute inset-0 opacity-0 cursor-pointer" />
                     <div className="absolute bottom-0 w-full bg-purple-600 text-white text-[8px] font-black text-center py-1 opacity-0 group-hover:opacity-100 transition-all">{uploading ? "SUBINDO..." : "CLIQUE PARA TROCAR LOGO"}</div>
                 </div>
-                <input value={editing.contato_nome || ""} onChange={e => setEditing({...editing, contato_nome: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm outline-none" placeholder="Responsável" />
-                <input value={editing.contato_whatsapp || ""} onChange={e => setEditing({...editing, contato_whatsapp: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm outline-none" placeholder="WhatsApp" />
                 <button onClick={handleSave} className="w-full bg-purple-600 text-white font-black py-5 rounded-3xl">Salvar CRM</button>
             </div>
         </div>
@@ -223,14 +286,7 @@ function EquipamentosView({ equipamentos, refresh, session }: any) {
             <div className="bg-[#0f0f0f] p-10 rounded-[48px] border border-white/5 space-y-6 shadow-2xl">
                 <h2 className="text-3xl font-black uppercase tracking-tighter">Ficha Técnica</h2>
                 <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <select value={editing.categoria || "Geral"} onChange={e => setEditing({...editing, categoria: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white outline-none">
-                            <option value="Geral">Categoria...</option>
-                            {CATEGORIAS_EQUIPAMENTO.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                        </select>
-                        {/* CORREÇÃO AQUI: || "" em todos os inputs */}
-                        <input value={editing.nome || ""} onChange={e => setEditing({...editing, nome: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white outline-none" placeholder="Nome do Equipamento" />
-                    </div>
+                    <input value={editing.nome || ""} onChange={e => setEditing({...editing, nome: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white outline-none" placeholder="Nome do Equipamento" />
                     <input value={editing.marca_modelo || ""} onChange={e => setEditing({...editing, marca_modelo: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white outline-none" placeholder="Marca / Modelo" />
                     <input value={editing.n_serie || ""} onChange={e => setEditing({...editing, n_serie: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white outline-none" placeholder="Número de Série" />
                     <div className="grid grid-cols-3 gap-4">
@@ -253,7 +309,7 @@ function EquipamentosView({ equipamentos, refresh, session }: any) {
                     <h1 className="text-4xl font-black tracking-tighter uppercase font-white">Inventário</h1>
                     <p className="text-neutral-500 text-sm mt-1">Patrimônio: <strong className="text-green-400">{stats.valorPatrimonio.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</strong> • {stats.totalItens} Itens</p>
                 </div>
-                <button onClick={() => setEditing({id:'new', nome:'', status:'Disponível', quantidade: 1, categoria: 'Geral'})} className="bg-white text-black px-8 py-4 rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl flex items-center gap-2"><Plus size={18}/> Novo Item</button>
+                <button onClick={() => setEditing({id:'new', nome:'', status:'Disponível', quantidade: 1})} className="bg-white text-black px-8 py-4 rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl flex items-center gap-2"><Plus size={18}/> Novo Item</button>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -264,7 +320,6 @@ function EquipamentosView({ equipamentos, refresh, session }: any) {
                             <div className="p-3 bg-white/5 rounded-2xl text-purple-400"><Camera size={24}/></div>
                             <div className="flex flex-col items-end gap-2">
                                 <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-wider ${e.status === 'Disponível' ? 'bg-green-500/20 text-green-400' : e.status === 'Manutenção' ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-400'}`}>{e.status}</span>
-                                <span className="text-[8px] text-neutral-500 font-bold uppercase tracking-widest border border-white/10 px-2 py-0.5 rounded">{e.categoria || 'Geral'}</span>
                             </div>
                         </div>
                         <h3 className="text-xl font-black uppercase text-white tracking-tight leading-none mb-1 relative z-10">{e.nome}</h3>
@@ -304,7 +359,6 @@ function EquipeView({ equipe, refresh, session }: any) {
                 <input value={editing.funcao || ""} onChange={e => setEditing({...editing, funcao: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Função" />
                 <input type="number" value={editing.valor_diaria || ""} onChange={e => setEditing({...editing, valor_diaria: Number(e.target.value)})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Valor Diária" />
                 <input value={editing.whatsapp || ""} onChange={e => setEditing({...editing, whatsapp: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="WhatsApp" />
-                <input value={editing.portfolio_url || ""} onChange={e => setEditing({...editing, portfolio_url: e.target.value})} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-sm text-white" placeholder="Link Portfólio" />
                 <button onClick={handleSave} className="w-full bg-purple-600 text-white font-black py-5 rounded-3xl uppercase text-xs">Salvar Talento</button>
             </div>
         </div>
@@ -321,7 +375,6 @@ function EquipeView({ equipe, refresh, session }: any) {
             </div>
             <div className="flex gap-2 mt-auto relative z-10">
                 {e.whatsapp && <a href={`https://wa.me/${e.whatsapp.replace(/\D/g,'')}`} target="_blank" className="p-3 bg-green-500/10 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition-all"><MessageSquare size={18}/></a>}
-                {e.portfolio_url && <a href={e.portfolio_url} target="_blank" className="p-3 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all"><Link size={18}/></a>}
                 <button onClick={() => setEditing(e)} className="p-3 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-all ml-auto"><Settings size={18}/></button>
             </div>
         </div>
@@ -404,7 +457,7 @@ function PropostasView({ propostas, clientes, refresh, session, onPrint }: any) 
             <div className="bg-[#0f0f0f] p-6 rounded-3xl border border-white/5 space-y-4 shadow-xl text-white font-white font-white font-white"><div className="flex justify-between items-center text-white font-white font-white"><label className="text-[10px] font-black text-neutral-500 uppercase font-white font-white">Orçamento</label><button onClick={() => setEditing({...editing, itens: [...(editing.itens || []), {id: Date.now().toString(), descricao: '', qtd: 1, valor: 0}]})} className="text-purple-400 text-xs font-bold transition-all hover:scale-105 active:scale-95 font-white font-white font-white font-white">+ Item</button></div>{editing.itens?.map((item: any, idx: number) => (<div key={item.id} className="grid grid-cols-[1fr_50px_90px_30px] gap-2 items-center text-white font-white font-white"><input value={item.descricao} onChange={e => { const ni = [...editing.itens]; ni[idx].descricao = e.target.value; setEditing({...editing, itens: ni}) }} className="bg-black border border-white/10 rounded-lg p-2 text-white text-[10px] outline-none" /><input type="number" value={item.qtd} onChange={e => { const ni = [...editing.itens]; ni[idx].qtd = Number(e.target.value); setEditing({...editing, itens: ni}) }} className="bg-black border border-white/10 rounded-lg p-2 text-white text-[10px] text-center outline-none" /><input type="number" value={item.valor} onChange={e => { const ni = [...editing.itens]; ni[idx].valor = Number(e.target.value); setEditing({...editing, itens: ni}) }} className="bg-black border border-white/10 rounded-lg p-2 text-white text-[10px] text-right outline-none" /><button onClick={() => setEditing({...editing, itens: editing.itens.filter((_:any, i:any) => i !== idx)})} className="text-red-500 transition-all hover:scale-110 active:scale-95"><Trash2 size={14}/></button></div>))}</div>
             <button onClick={handleSave} className="w-full bg-purple-600 text-white font-black py-5 rounded-3xl shadow-xl transition-all uppercase tracking-widest text-xs active:scale-95 shadow-purple-500/10">Salvar Proposta</button>
           </div>
-          <div className="bg-[#0f0f0f] rounded-[48px] border border-white/5 p-12 flex justify-center overflow-hidden font-white font-white"><div className="w-[210mm] min-h-[297mm] bg-white text-black p-[60px] shadow-2xl origin-top scale-[0.6] lg:scale-[0.75] relative overflow-hidden flex flex-col justify-between text-black text-black font-white font-white"><div className="absolute top-0 left-0 w-full h-[6px] bg-purple-600 font-white font-white" /><img src="/bg-home.jpg" className="absolute inset-0 w-full h-full object-cover opacity-[0.04] grayscale pointer-events-none font-white font-white" /><div className="relative z-10 text-black text-black text-black font-black text-black text-black text-black font-white font-white font-white"><div className="flex justify-between items-center mb-8 font-white font-white"><div className="w-32 font-white font-white"><img src="/logo-lampejo.png" className="w-full filter invert font-white font-white font-white" /></div><div className="text-right text-black text-black text-black font-white font-white">{cliSel?.logo_url && <img src={cliSel.logo_url} className="h-10 object-contain font-white font-white" />}<p className="text-[8px] font-black text-neutral-400 mt-2 uppercase font-white font-white">Ref: LP-{new Date().getFullYear()}-001</p></div></div><div className="mb-4 text-black text-black text-black font-white font-white"><h1 className="text-xl font-black uppercase tracking-tighter text-black leading-tight text-black text-black font-white font-white">{editing.projeto || "TÍTULO"}</h1></div><div className="grid grid-cols-2 gap-8 border-y border-neutral-100 py-3 mb-4 text-black text-black text-black font-white font-white"><div><p className="text-[7px] font-black text-neutral-400 uppercase font-white font-white">Data</p><p className="text-xs font-bold text-black font-white font-white">{formatarDataSimples(editing.data)}</p></div><div><p className="text-[7px] font-black text-neutral-400 uppercase text-black font-white font-white">Cliente</p><p className="text-xs font-bold text-black uppercase font-white font-white">{editing.cliente || '--'}</p></div></div><div className="text-xs leading-relaxed text-black whitespace-pre-wrap mb-4 font-medium text-neutral-700 text-justify text-black text-black font-white font-white">{editing.introducao || "..."}</div><div className="bg-neutral-50 p-6 rounded-2xl border border-neutral-100 mb-4 text-black text-black text-black font-white font-white"><h4 className="text-[8px] font-black text-neutral-400 uppercase mb-2 tracking-widest text-black font-white font-white font-white">Deliverables</h4><p className="whitespace-pre-wrap text-xs font-bold text-neutral-800 leading-tight text-black font-white font-white">{editing.entregaveis || "..."}</p></div><table className="w-full text-left text-xs mb-4 text-black text-black text-black font-white font-white font-white font-white"><thead><tr className="text-[8px] font-black text-neutral-400 uppercase border-b border-neutral-100 text-black font-white font-white"><th>Serviço</th><th className="text-center">Qtd</th><th className="text-right">Total</th></tr></thead><tbody className="divide-y divide-neutral-50 text-black text-black text-black text-black font-white font-white">{editing.itens?.map((i: any, idx: number) => (<tr key={idx} className="text-black font-white font-white"><td className="py-2 font-bold text-[10px] text-black font-white font-white">{i.descricao}</td><td className="py-2 text-center text-neutral-500 text-[10px] text-black font-white font-white">{i.qtd}x</td><td className="py-2 text-right font-black text-[10px] text-black font-white font-white">{(Number(i.qtd) * Number(i.valor)).toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</td></tr>))}</tbody></table><div className="text-right border-t border-black pt-2 text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white"><p className="text-[8px] font-black text-neutral-400 uppercase text-black font-white font-white">Investimento Total</p><p className="text-3xl font-black tracking-tighter text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white">{(editing.itens?.reduce((a:any, b:any) => a + (Number(b.qtd) * Number(b.valor)), 0) || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</p></div></div><div className="relative z-10 border-t border-neutral-100 pt-6 mt-4 flex justify-between items-end opacity-60 text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white"><div className="text-left text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white"><p className="text-[8px] font-black uppercase mb-1 text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white">Lampejo Audiovisual</p><p className="text-[7px]">Brasília-DF • {cliSel?.endereco || "Brasília Shopping Sala 1221"}</p></div><div className="text-right text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white"><p className="text-[7px]">CNPJ: 63.030.132/0001-86</p></div></div></div></div>
+          <div className="bg-[#0f0f0f] rounded-[48px] border border-white/5 p-12 flex justify-center overflow-hidden font-white font-white"><div className="w-[210mm] min-h-[297mm] bg-white text-black p-[60px] shadow-2xl origin-top scale-[0.6] lg:scale-[0.75] relative overflow-hidden flex flex-col justify-between text-black text-black font-white font-white"><div className="absolute top-0 left-0 w-full h-[6px] bg-purple-600 font-white font-white" /><img src="/bg-home.jpg" className="absolute inset-0 w-full h-full object-cover opacity-[0.04] grayscale pointer-events-none font-white font-white" /><div className="relative z-10 text-black text-black text-black font-black text-black text-black text-black font-white font-white font-white"><div className="flex justify-between items-center mb-8 font-white font-white"><div className="w-32 font-white font-white"><img src="/logo-lampejo.png" className="w-full filter invert font-white font-white font-white" /></div><div className="text-right text-black text-black text-black font-white font-white">{cliSel?.logo_url && <img src={cliSel.logo_url} className="h-10 object-contain font-white font-white" />}<p className="text-[8px] font-black text-neutral-400 mt-2 uppercase font-white font-white">Ref: LP-{new Date().getFullYear()}-001</p></div></div><div className="mb-4 text-black text-black text-black font-white font-white"><h1 className="text-xl font-black uppercase tracking-tighter text-black leading-tight text-black text-black font-white font-white">{editing.projeto || "TÍTULO"}</h1></div><div className="grid grid-cols-2 gap-8 border-y border-neutral-100 py-3 mb-4 text-black text-black text-black font-white font-white"><div><p className="text-[7px] font-black text-neutral-400 uppercase font-white font-white">Data</p><p className="text-xs font-bold text-black font-white font-white">{formatarDataSimples(editing.data)}</p></div><div><p className="text-[7px] font-black text-neutral-400 uppercase text-black font-white font-white">Cliente</p><p className="text-xs font-bold text-black uppercase font-white font-white">{editing.cliente || '--'}</p></div></div><div className="text-xs leading-relaxed text-black whitespace-pre-wrap mb-4 font-medium text-neutral-700 text-justify text-black text-black font-white font-white">{editing.introducao || "..."}</div><div className="bg-neutral-50 p-6 rounded-2xl border border-neutral-100 mb-4 text-black text-black text-black font-white font-white"><h4 className="text-[8px] font-black text-neutral-400 uppercase mb-2 tracking-widest text-black font-white font-white font-white">Deliverables</h4><p className="whitespace-pre-wrap text-xs font-bold text-neutral-800 leading-tight text-black font-white font-white">{editing.entregaveis || "..."}</p></div><table className="w-full text-left text-xs mb-4 text-black text-black text-black font-white font-white font-white font-white"><thead><tr className="text-[8px] font-black text-neutral-400 uppercase border-b border-neutral-100 text-black font-white font-white"><th>Serviço</th><th className="text-center">Qtd</th><th className="text-right">Total</th></tr></thead><tbody className="divide-y divide-neutral-50 text-black text-black text-black text-black font-white font-white">{editing.itens?.map((i: any, idx: number) => (<tr key={idx} className="text-black font-white font-white"><td className="py-2 font-bold text-[10px] text-black font-white font-white">{i.descricao}</td><td className="py-2 text-center text-neutral-500 text-[10px] text-black font-white font-white">{i.qtd}x</td><td className="py-2 text-right font-black text-[10px] text-black font-white font-white">{(Number(i.qtd) * Number(i.valor)).toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</td></tr>))}</tbody></table><div className="text-right border-t border-black pt-2 text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white"><p className="text-[8px] font-black text-neutral-400 uppercase text-black font-white font-white">Investimento Total</p><p className="text-3xl font-black tracking-tighter text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white">{(editing.itens?.reduce((a:any, b:any) => a + (Number(b.qtd) * Number(b.valor)), 0) || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</p></div></div><div className="relative z-10 border-t border-neutral-100 pt-6 mt-4 flex justify-between items-end opacity-60 text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white"><div className="text-left text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white"><p className="text-[8px] font-black uppercase mb-1 text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white">Lampejo Audiovisual</p><p className="text-[7px]">Brasília-DF • {cliSel?.endereco || "Brasília Shopping Sala 1221"}</p></div><div className="text-right text-black text-black text-black font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white font-white"><p className="text-[7px]">CNPJ: 63.030.132/0001-86</p></div></div></div></div>
         </div>
       );
     }
@@ -494,7 +547,7 @@ export default function LampejoEnterpriseSystem() {
           {view === 'equipamentos' && <EquipamentosView equipamentos={equipamentos} refresh={fetchData} session={session} />}
           {view === 'documentos' && <DocumentosView documentos={documentos} clientes={clientes} projetos={projetos} refresh={fetchData} session={session} onPrint={(d: any) => { setPrintData({type:'documento', data:d}); setTimeout(()=>window.print(), 300); }} />}
           {view === 'propostas' && <PropostasView propostas={propostas} clientes={clientes} refresh={fetchData} session={session} onPrint={(p: any) => { setPrintData({type:'proposta', data:p}); setTimeout(()=>window.print(), 300); }} />}
-          {view === 'financeiro' && <FinanceiroView financeiro={financeiro} refresh={fetchData} session={session} onPrint={(f: any) => { setPrintData({type:'relatorio', data:f}); setTimeout(()=>window.print(), 300); }} />}
+          {view === 'financeiro' && <FinanceiroView financeiro={financeiro} refresh={fetchData} session={session} onPrint={(f: any) => { setPrintData({type:'relatorio', data:f}); setTimeout(()=>window.print(), 300); }} equipamentos={equipamentos} />}
         </main>
       </div>
 

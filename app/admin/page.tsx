@@ -458,7 +458,7 @@ function PropostasView({ propostas, clientes, refresh, session, onPrint }: any) 
 // ============================================================================
 // MAIN APP
 // ============================================================================
-export default function LampejoSystem() {
+export default function LENZSystem() {
   const [session, setSession] = useState<any>(null);
   const [view, setView] = useState('dashboard');
   const [data, setData] = useState<any>({propostas:[], financeiro:[], clientes:[], equipamentos:[], equipe:[], documentos:[]});

@@ -16,11 +16,11 @@ export default function LinksPage() {
   // --- CONFIGURE SEUS LINKS AQUI ---
   const socialLinks = {
     whatsapp: "https://wa.me/5561994079423?text=Ol%C3%A1%2C%20vim%20pelo%20Instagram%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.", // Coloque seu número
-    instagram: "https://www.instagram.com/lampejo_audiovisual/",
-    linkedin: "https://www.linkedin.com/in/lampejo-audiovisual/",
-    youtube: "https://youtube.com/@LampejoAudiovisual",
-    facebook: "https://facebook.com/sua-pagina",
-    email: "mailto:lampejo.rec@gmail.com"
+    instagram: "https://www.instagram.com/lenzaudiovisual/",
+    linkedin: "https://www.linkedin.com/in/lenzaudiovisual/",
+    youtube: "https://youtube.com/@lenzAudiovisual",
+    facebook: "https://facebook.com/lenzaudiovisual",
+    email: "mailto:contato@lenzaudiovisual.com.br"
   };
 
   const buttons = [

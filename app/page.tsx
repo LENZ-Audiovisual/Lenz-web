@@ -10,7 +10,7 @@ import { ArrowRight, Play, Quote } from "lucide-react";
 const SERVICES = [
   {
     id: 0,
-    title: "Manifesto Lampejo",
+    title: "Manifesto LENZ",
     description: "Nossa essência em movimento. Entenda como pensamos e por que fazemos o que fazemos.",
     tag: "Showreel 2025",
     videoTitle: "ASSISTA AO MANIFESTO"

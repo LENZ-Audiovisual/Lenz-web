@@ -30,7 +30,7 @@ export default function ApprovalClient({ cliente }: { cliente: string }) {
   const [isUnlocked, setIsUnlocked] = useState(false);
 
   const checkPassword = () => {
-    if (password === "lampejo") setIsUnlocked(true);
+    if (password === "LENZ") setIsUnlocked(true);
     else alert("Senha incorreta");
   };
 

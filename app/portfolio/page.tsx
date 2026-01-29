@@ -37,15 +37,15 @@ const clientsData: ClientData[] = [
     description: "Núcleo de Informação e Coordenação do Ponto BR. Cobertura de eventos de infraestrutura e governança da internet.",
     fullDescription: `
       O NIC.br é o braço executivo do Comitê Gestor da Internet no Brasil (CGI.br), responsável por coordenar e integrar as iniciativas de serviços da Internet no país.
-      
-      A Lampejo atua como parceira audiovisual na cobertura de grandes eventos técnicos, como a Semana de Infraestrutura e o IX Fórum. Nosso desafio é transformar temas complexos de tecnologia, segurança e governança em conteúdos dinâmicos e acessíveis.
-      
+
+      A LENZ atua como parceira audiovisual na cobertura de grandes eventos técnicos, como a Semana de Infraestrutura e o IX Fórum. Nosso desafio é transformar temas complexos de tecnologia, segurança e governança em conteúdos dinâmicos e acessíveis.
+
       Realizamos desde a captação integral de palestras até a produção de "Melhores Momentos" e entrevistas, garantindo que o conhecimento gerado nesses encontros alcance um público ainda maior.
     `,
     projects: [
       {
         id: "nic_vid1",
-        title: "O Futuro do Jornalismo em Debate: Seminário CGI.br (Resumo 4K) | Produção Lampejo",
+        title: "O Futuro do Jornalismo em Debate: Seminário CGI.br (Resumo 4K) | Produção LENZ",
         type: "Youtube",
         image: "https://img.youtube.com/vi/wxYwa6FBCG8/maxresdefault.jpg",
         link: "https://youtu.be/wxYwa6FBCG8"
@@ -94,7 +94,7 @@ const clientsData: ClientData[] = [
       },
       {
         id: "nic_vid8",
-        title: "A História da Internet no Brasil: NIC.br celebra 35 anos do .br | Produção Lampejo",
+        title: "A História da Internet no Brasil: NIC.br celebra 35 anos do .br | Produção LENZ",
         type: "Youtube",
         image: "https://img.youtube.com/vi/a83MeM-KdKo/maxresdefault.jpg",
         link: "https://youtu.be/a83MeM-KdKo"
@@ -115,8 +115,8 @@ const clientsData: ClientData[] = [
     logo: "/hy.png",
     description: "Produção de eventos corporativos e experiências de marca com excelência.",
     fullDescription: `
-      A Lampejo Audiovisual atua como parceira estratégica de conteúdo para a HY Produções & Eventos, registrando o crescimento e a magnitude de suas entregas.
-      
+      A LENZ Audiovisual atua como parceira estratégica de conteúdo para a HY Produções & Eventos, registrando o crescimento e a magnitude de suas entregas.
+       
       Nesta seleção, destacamos a versatilidade da nossa parceria: desde filmes institucionais que marcam a nova fase da empresa, até a cobertura Real-Time de grandes congressos como o 75º ENCAT e eventos sociais.
       
       Nosso objetivo é traduzir em vídeo a infraestrutura de ponta e o cuidado aos detalhes que consolidam a HY como referência no setor de eventos.
@@ -152,7 +152,7 @@ const clientsData: ClientData[] = [
     logo: "/estadao.png",
     description: "Cobertura estratégica de fóruns nacionais, transformando debates complexos em conteúdo multiplataforma.",
     fullDescription: `
-      Como parceiros de conteúdo audiovisual do Estadão em Brasília, a Lampejo tem a missão de ampliar o alcance dos principais fóruns e seminários promovidos pelo veículo.
+      Como parceiros de conteúdo audiovisual do Estadão em Brasília, a LENZ tem a missão de ampliar o alcance dos principais fóruns e seminários promovidos pelo veículo.
       
       Nossa atuação vai além do registro: transformamos horas de debates técnicos sobre Segurança Pública, Saúde e Economia em narrativas acessíveis e ágeis. 
       
@@ -209,7 +209,7 @@ const clientsData: ClientData[] = [
       
       Realizado no Royal Tulip em Brasília, o evento consolidou a capital federal como um polo nacional da Harmonização Orofacial. Sob a idealização dos especialistas Dra. Juliane Guiotti e Dr. Diogo Lustosa, o congresso reuniu grandes nomes da saúde estética para debater técnicas avançadas.
       
-      A atuação da Lampejo foi estratégica e ágil: além da cobertura completa, cuidamos da produção dos vídeos resumos e da edição especial exibida no telão ao final de cada dia (Same Day Edit). Essa entrega em tempo real permitiu que os congressistas revivessem os melhores momentos instantaneamente, elevando a experiência do evento.
+      A atuação da LENZ foi estratégica e ágil: além da cobertura completa, cuidamos da produção dos vídeos resumos e da edição especial exibida no telão ao final de cada dia (Same Day Edit). Essa entrega em tempo real permitiu que os congressistas revivessem os melhores momentos instantaneamente, elevando a experiência do evento.
     `,
     projects: [
       {
@@ -235,7 +235,7 @@ const clientsData: ClientData[] = [
     logo: "/semrotulo.png",
     description: "A Revolução da Beleza Limpa. Série de conteúdos verticais desmistificando a indústria cosmética.",
     fullDescription: `
-      Apresentamos a série de conteúdos estratégicos produzida pela Lampejo Audiovisual para a Sem Rótulo Cosméticos, captada durante o Threads Concept Conference, em Brasília.
+      Apresentamos a série de conteúdos estratégicos produzida pela LENZ Audiovisual para a Sem Rótulo Cosméticos, captada durante o Threads Concept Conference, em Brasília.
       
       Neste projeto, desenvolvemos uma narrativa visual para as fundadoras Melyssa Esser e Lais Theis, com o objetivo de desmistificar a indústria da beleza tradicional. Abordamos a importância da leitura de rótulos, o alerta sobre ingredientes tóxicos e como a saúde da pele começa pela nutrição.
       

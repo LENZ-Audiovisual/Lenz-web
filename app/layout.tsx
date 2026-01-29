@@ -9,18 +9,18 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space
 const GA_MEASUREMENT_ID = "G-B9XLZL73HX"; 
 
 export const metadata: Metadata = {
-  title: "Lampejo | Audiovisual na velocidade do agora",
+  title: "LENZ | Audiovisual na velocidade do agora",
   description: "Produtora audiovisual em Brasília focada em narrativas de impacto. Do roteiro ao play.",
-  keywords: ["Produtora de Vídeo", "Brasília", "Audiovisual", "Filmmaker", "Edição", "Motion Graphics", "Lampejo"],
-  authors: [{ name: "Lampejo Audiovisual" }],
+  keywords: ["Produtora de Vídeo", "Brasília", "Audiovisual", "Filmmaker", "Edição", "Motion Graphics", "LENZ"],
+  authors: [{ name: "LENZ Audiovisual" }],
   openGraph: {
-    title: "Lampejo | Audiovisual na velocidade do agora",
+    title: "LENZ | Audiovisual na velocidade do agora",
     description: "Encurtamos a distância entre a ideia e o play.",
     url: "https://lampejo.rec.br",
-    siteName: "Lampejo",
+    siteName: "LENZ",
     locale: "pt_BR",
     type: "website",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Lampejo Audiovisual" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "LENZ Audiovisual" }],
   },
   robots: { index: true, follow: true },
 };
@@ -44,9 +44,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "VideoProductionService",
-            "name": "Lampejo Audiovisual",
-            "url": "https://lampejo.rec.br",
-            "logo": "https://lampejo.rec.br/logo-lampejo.png",
+            "name": "LENZ Audiovisual",
+            "url": "https://lenzaudiovisual.com.br",
+            "logo": "https:/lenzaudiovisual.com.br/logo-lenz.png",
             "areaServed": "Brasília",
             "description": "Produtora audiovisual focada em narrativas de impacto e velocidade de entrega.",
             "address": {
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               "addressCountry": "BR"
             },
             "sameAs": [
-              "https://instagram.com/lampejo.rec"
+              "https://instagram.com/lenzaudiovisual"
             ]
           })
         }} />
